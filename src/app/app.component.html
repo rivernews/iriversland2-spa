@@ -1,0 +1,83 @@
+<!-- 
+    fullscreen: if you add fullscreen on mat-sidenav-container, the unwatned space wili disappear,
+    but now scroll event is taken over by mat-sidenav-content; 3rd party libs that use scroll event listenser
+    on window will not work (e.g. lazy-load-image)
+    
+    Workaround: remove fullscreen to let window scroll event work, and add body margin: 0 in stylesheet
+    to eliminate unwatned whitespaces.
+-->
+<mat-sidenav-container [style.background]="appBackgroundColor">
+
+    <ng-template #navItemsTemplate>
+        <div fxFlexFill fxLayout="column">
+            <!-- <a (click)="sidenav.close()" mat-button class="logo-wrapper" routerLink="/home" fxLayout="column" fxLayoutAlign="center stretch">
+                {{title}}
+            </a> -->
+            <button (click)="sidenav.close()" class="logo-wrapper image-background-container" routerLink="/home" mat-button fxLayout="column" fxLayoutAlign="center stretch">
+                <img class="image-background image-contain"
+                lazyLoad="https://s3.us-east-2.amazonaws.com/iriversland2-media/brands/shaungc-logo.png"
+                offset="1" alt="shaung cheng logo">
+            </button>
+            <a (click)="sidenav.close()" mat-button *ngFor="let link of navLinks" [routerLink]="link.routerLink" routerLinkActive #rla="routerLinkActive"
+                active="rla.isActive">
+                <div fxFlexFill fxLayout="row" fxLayoutAlign="space-around">
+                    <span fxFlex="30%" align="right">
+                        <mat-icon fxFlex fontSet="material-icons">{{link.icon}}</mat-icon>
+                    </span>
+                    <span fxFlex="60%" align="left">{{link.label|uppercase}}</span>
+                </div>
+
+            </a>
+        </div>
+    </ng-template>
+
+    <mat-sidenav #sidenav mode="over" position="end" [fixedInViewport]="true"  [style.background]="'lightgray'">
+        <ng-container *ngTemplateOutlet="navItemsTemplate"></ng-container>
+    </mat-sidenav>
+
+
+
+    <mat-sidenav-content>
+        <div *ngIf="currentRoutePathList" [class]="(currentRoutePathList.length > 2 && isLogin) ? 'left-bottom-control' : 'right-bottom-control'">
+            <button fxHide.gt-sm mat-mini-fab (click)="sidenav.toggle()" aria-label="menu toggle button (only for mobile phone)">
+                <mat-icon fontSet="material-icons">menu</mat-icon>
+            </button>
+        </div>
+        <header *ngIf="showAppBar(routerOutlet)">
+            <mat-toolbar fxHide.lt-md fxFlex fxLayout="row" fxLayoutAlign="space-around center">
+                <mat-toolbar-row>
+                    <button class="logo-wrapper image-background-container" routerLink="/home" mat-button fxLayout="column" fxLayoutAlign="center stretch">
+                        <img class="image-background image-contain"
+                        lazyLoad="https://s3.us-east-2.amazonaws.com/iriversland2-media/brands/shaungc-logo.png"
+                        offset="1" alt="shaung cheng logo">
+                    </button>
+                    <span fxFlex></span>
+                    <nav mat-tab-nav-bar>
+                        <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.routerLink" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+                            <mat-icon fontSet="material-icons">{{link.icon}}</mat-icon>
+                            {{link.label|uppercase}}
+                        </a>
+                    </nav>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </header>
+
+        <div #routerFooterWrapper>
+            <main>
+                <router-outlet (activate)="onRouterActivate($event)" (deactivate)="onRouterDeactivate($event)" #routerOutlet="outlet"></router-outlet>
+            </main>
+
+            <footer>
+                <app-footer></app-footer>
+            </footer>
+        </div>
+        <div *ngIf="isLocalDev" class="responsive-indicator"></div>
+
+        <div class="right-top-control">
+            <button *ngIf="isLogin" mat-mini-fab (click)="logout()" aria-label="">
+                <mat-icon fontSet="material-icons">eject</mat-icon>
+            </button>
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

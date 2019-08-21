@@ -1,0 +1,113 @@
+@import "../../../global-styles/mixins.scss";
+
+@import "../../../global-styles/responsive.scss";
+$gt-sm: map-get($breakpoints, gt-sm);
+
+
+
+
+/*****
+
+Form Size
+
+*****/
+
+@mixin form-size-height-setup($breakpoint, $form-container-height: 80vh, $form-headline-height: 15vh) {
+    $form-height: $form-container-height - $form-headline-height;
+    
+    @include bp($breakpoint) {
+        min-height: $form-container-height;
+
+        .contact-form-headline {
+            min-height: $form-headline-height;
+        }
+        .contact-form {
+            min-height: $form-height;
+        }
+    }
+}
+
+
+::ng-deep .contact-form-container {
+    @include form-size-height-setup(gt-sm, 60vh, 20vh);
+    @include form-size-height-setup(lt-md);
+    @include form-size-height-setup(lt-sm, 95vh, 20vh);
+    
+    .contact-form {
+        min-width: 50vw;
+        max-width: 600px;
+
+        .short-input-field {
+            @include bp(gt-sm) {
+                width: 50%;    
+            }
+        }
+
+        .message-box {
+            min-height: 20vh;
+        }
+    }
+
+    .submit-success-container {
+        min-height: 40vh;
+    }    
+}
+
+
+
+
+
+/*****
+
+Form Accessibility
+https://webaim.org/resources/contrastchecker/ 
+
+*****/
+
+/* increase color contrast contrast for a11y */
+::ng-deep .mat-form-field-label.mat-form-field-empty {
+    color: #454545 ;
+}
+::ng-deep .mat-form-field-underline {
+    background-color: #454545;
+}
+
+
+
+
+
+
+
+/*****
+
+Submit Animation
+
+*****/
+
+.contact-form, ::ng-deep .submit-success-container {
+    @include set-transition-promptly(opacity background-color, 0.5s);
+}
+
+::ng-deep .submit-success-container {
+    &:not(.disappear) {
+        @include box-shadow-mixin($offset-y: 0px, $blur-radius: 60px, $spread-radius: 0px, $color: rgba(0, 0, 0, 0.27));        
+        background-color: rgba(0, 0, 0, 0.03);
+        border-radius: 10px;
+
+        .submit-success-icon {
+            transform: scale(2);
+        }
+
+        @media #{$gt-sm} {
+            padding: 20px 20px;
+        }
+    }
+}
+
+.disappear {
+    opacity: 0;
+}
+
+::ng-deep .gone {
+    display: none !important;
+}

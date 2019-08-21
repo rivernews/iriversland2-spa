@@ -1,0 +1,80 @@
+/*
+* 
+* Responsive Breakpoints
+* Usage: 
+
+@import "../../global-styles/responsive.scss";
+$gt-sm: map-get($breakpoints, gt-sm);
+$lt-md: map-get($breakpoints, lt-md);
+
+@media  {
+
+}
+
+*/
+
+$breakpoints:(
+    xs: screen and (max-width: 599px),
+    sm: screen and (min-width: 600px) and (max-width: 959px),
+    md: screen and (min-width: 960px) and (max-width: 1279px),
+    lg: screen and (min-width: 1280px) and (max-width: 1919px),
+    xl: screen and (min-width: 1920px) and (max-width: 5000px),
+    lt-sm: screen and (max-width: 599px),
+    lt-md: screen and (max-width: 959px),
+    lt-lg: screen and (max-width: 1279px),
+    lt-xl: screen and (max-width: 1919px),
+    gt-xs: screen and (min-width: 600px), 
+    gt-sm: screen and (min-width: 960px),
+    gt-md: screen and (min-width: 1280px),
+    gt-xl: screen and (min-width: 1920px),
+);
+
+.responsive-indicator {
+    &:after {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        padding: .8em 3em;
+        opacity: 0.9;
+        border-radius: .5em .5em 0 0;
+
+        background-color: gray;
+        color: white;
+        content: "undefined";
+
+        $keys: map-keys($breakpoints);
+        @for $i from length($keys) through 1 {
+            $device: nth($list: $keys, $n: $i);
+            $query-range: map-get($map: $breakpoints, $key: $device);
+            @media #{$query-range} {
+                background-color: rgba($i*20, 240 - $i*30, 255 - $i*15, 0.9);
+                content: "#{$i} #{$device}";
+            }
+        }
+    }
+}
+
+/**
+    Usage:
+
+    @import "../../global-styles/responsive.scss";
+
+    @include bp(gt-sm) {
+
+        YOUR CSS HERE
+
+    }
+*/
+@mixin bp($breakpoint) {
+    $keys: map-keys($breakpoints);
+    @for $i from length($keys) through 1 {
+        $device: nth($list: $keys, $n: $i);
+        $query-range: map-get($map: $breakpoints, $key: $device);
+
+        @if $breakpoint == $device {
+            @media #{$query-range} {
+                @content;
+            }
+        }
+    }
+}

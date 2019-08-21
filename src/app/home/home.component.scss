@@ -1,0 +1,99 @@
+@import "../../global-styles/mixins.scss";
+
+@import "../../global-styles/responsive.scss";
+$gt-sm: map-get($breakpoints, gt-sm);
+$lt-md: map-get($breakpoints, lt-md);
+
+/******
+
+Head Actions
+
+******/
+
+// glass overlay effect see https://medium.com/@AmJustSam/how`-to-do-css-only-frosted-glass-effect-e2666bafab91
+.image-background {
+
+    .middle-blur-container {
+        @include pinned-box-mixin();
+        background-attachment: fixed; 
+
+        &::before {
+            content: " ";
+
+            @include pinned-box-mixin();
+            background-position: 50% 40%;
+            
+            transform: scale(1.5) translate3d(0,0,1px); // trnaslate3d turns on hardware acceleration
+            backface-visibility: hidden; // avoid glitches when setting 3d z axis
+            
+            filter: blur(13px) brightness(0.6);
+        }
+
+        // shadow below middle title
+        @include box-shadow-mixin($offset-y: 7px, $blur-radius: 14px, $spread-radius: 0px, $color: rgba(0, 0, 0, 0.6));
+    }
+}
+.headline-middle-text-container {
+    // middle text be pulled out; initially override by blur filter layer (.middle-blur-container)
+    // need to be at least same as .image-background-container, which set to z-index: 1
+    z-index: 1;
+}
+
+
+
+
+
+
+/******
+
+Hightlights
+
+******/
+
+.highlighted-contents-my-role,
+.highlighted-contents-demonstrated-skills {
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+/******
+
+Bottom Actions
+
+******/
+.home-bottom-container {
+    @include bp(gt-sm){
+        min-height: 90vh;
+    }
+    @include bp(lt-md){
+        min-height: 134vh;
+    }
+    
+    .home-bottom-headline {
+        @include bp(gt-sm){
+            min-height: 15vh;
+        }
+        @include bp(lt-md){
+            min-height: 25vh;
+        }
+    }
+    
+    .bottom-middle-float-box-container {
+        transform: translateZ(0); /* w/o this line, safari can't show the border-radius */
+        border-radius: 10px;
+    
+        @media #{$gt-sm} {
+            min-height: 50vh;
+        }
+        @media #{$lt-md} {
+            min-height: 80vh;
+        }
+    
+        overflow: hidden;
+        @include box-shadow-mixin($offset-y: 5px, $blur-radius: 60px, $spread-radius: 0px, $color: rgba(0, 0, 0, 0.8));
+    }
+}

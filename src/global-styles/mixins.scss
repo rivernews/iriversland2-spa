@@ -1,0 +1,136 @@
+/*****
+
+Basic Layout Shortcut
+
+*****/
+@mixin set-horizontal-margin($value) {
+    margin-left: $value ; 
+    margin-right: $value ;
+}
+
+@mixin set-vertical-margin($value, $value-2: none) {
+    @if ($value-2 == "none") {
+        margin-top: $value ; 
+        margin-bottom: $value ;
+    } @else {
+        margin-top: $value ; 
+        margin-bottom: $value-2 ;
+    }
+}
+
+
+
+/***** 
+
+Box Shadow
+see more at ... see https://css-tricks.com/almanac/properties/b/box-shadow/ 
+
+*****/
+@mixin box-shadow-mixin-multiple($arg-y-blur-color-list) {
+    $box-shadow-collection: '';
+    @for $i from 1 through length($arg-y-blur-color-list)/3 {
+        
+        $offset-y: nth($list: $arg-y-blur-color-list, $n: 3*$i - 2 );
+        $blur-radius: nth($list: $arg-y-blur-color-list, $n: 3*$i - 1);
+        $color: nth($list: $arg-y-blur-color-list, $n: 3*$i);
+
+        @if ($box-shadow-collection == '') {
+            $box-shadow-collection: box-shadow-function(0, $offset-y, $blur-radius, 0, $color);
+        } @else {
+            $box-shadow-collection: #{$box-shadow-collection}, box-shadow-function(0, $offset-y, $blur-radius, 0, $color);
+        }
+    }
+    box-shadow: $box-shadow-collection;
+}
+
+@mixin box-shadow-mixin(
+    $offset-x: 0, $offset-y: 0, $blur-radius: 0, $spread-radius: 0, $color: transparent, $inset: false) {
+    @if $inset {
+        box-shadow: inset $offset-x $offset-y $blur-radius $spread-radius $color;
+    } @else {
+        box-shadow: $offset-x $offset-y $blur-radius $spread-radius $color;
+    }
+}
+
+@function box-shadow-function(
+    $offset-x: 0, $offset-y: 0, $blur-radius: 0, $spread-radius: 0, $color: transparent, $inset: false) {
+    @if $inset {
+        @return inset $offset-x $offset-y $blur-radius $spread-radius $color;
+    } @else {
+        @return $offset-x $offset-y $blur-radius $spread-radius $color;
+    }
+}
+
+
+
+
+/*****
+
+Overlay Content
+
+*****/
+@mixin pinned-box-mixin($no-background: false) {
+
+    @if $no-background != true {
+        background: inherit;
+    }
+    
+    position: absolute;
+    // top: 0;
+    // left: 0;
+    // right: 0;
+    // bottom: 0;
+
+    height: 100%;
+    width: 100%;
+
+    overflow: hidden;
+}
+
+
+
+
+
+
+/*****
+
+Transition Shortcut
+
+*****/
+@mixin set-transition-promptly($css-properties, $duration: 0.4s) {
+    $transition-collection: '';
+
+    @each $css-property in $css-properties {
+        $transition-timing: $duration cubic-bezier(0.23, 1, 0.32, 1) 0s; // take a look at https://developers.google.com/web/fundamentals/design-and-ux/animations/choosing-the-right-easing
+
+        @if ($transition-collection == '') {
+            $transition-collection: #{$css-property} #{$transition-timing};
+        } @else {
+            $transition-collection: #{$transition-collection}, #{$css-property} #{$transition-timing};
+        }
+
+        @if ($css-property == 'transform') {
+            backface-visibility: hidden; // avoid glitches when setting 3d z axis for hardware acceleration; remember to add 'translate3d(0,0,-1px)' to CSS transform!
+        }
+    }
+
+    will-change: $css-properties; // helps some browsers do further optimization
+    transition: $transition-collection;
+}
+
+
+/*****
+
+Helpers
+
+*****/
+
+@mixin enable-hardware-accelerated-transform($transform-args: ''){
+    @if $transform-args == '' {
+        transform: translate3d(0,0,-1px); // trnaslate3d turns on hardware acceleration
+    }
+    @else {
+        transform: $transform-args, translate3d(0,0,-1px); // trnaslate3d turns on hardware acceleration
+    }
+    backface-visibility: hidden; // avoid glitches when setting 3d z axis
+}

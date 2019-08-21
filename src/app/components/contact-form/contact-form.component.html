@@ -1,0 +1,41 @@
+<div class="contact-form-container" fxLayout="column" fxLayoutAlign="start center">
+    <form class="contact-form" [formGroup]="form" *ngIf="ifContactForm" #contactForm fxFlex 
+        fxLayout="column" fxLayoutAlign="space-around stretch">
+
+        <!-- headline -->
+        <div class="contact-form-headline" 
+            fxLayout="column" fxLayoutAlign="center stretch"
+            *ngIf="headlineText || descriptionText">
+            <h1 align="center">{{headlineText}}</h1>
+            <span class="mat-body-1" align="center">
+                {{descriptionText}}
+            </span>
+        </div>
+
+        <!-- contact form -->
+        <mat-form-field class="short-input-field">
+            <input formControlName="email" type="email" matInput placeholder="Your email" required >
+            <mat-error *ngIf="!form.controls['email'].valid">Provide a valid email so I can get back to you ;)</mat-error>
+        </mat-form-field>
+        <mat-form-field class="short-input-field">
+            <input formControlName="name" type="text" matInput placeholder="Your Name" required >
+        </mat-form-field>
+        <mat-form-field>
+            <textarea class="message-box" formControlName="message" matInput placeholder="Leave me a message" required ></textarea>
+        </mat-form-field>
+        <div class="submit-action-fields" fxFlex="noshrink" fxLayout.gt-sm="row" fxLayoutAlign.gt-xs="space-between" fxLayout.lt-md="column">
+            <re-captcha align="center" (captchaResponse)="handleCorrectCaptcha($event)" (captchaExpired)="null" site_key="6LcUamUUAAAAAMRG8BlK2i2sC9ezqWjaIyDA9tfj"></re-captcha>
+            <button mat-button (click)="onSubmitContactForm()" [disabled]="!form.valid || isSubmitting.getValue()">
+                <mat-icon fontSet="material-icons">send</mat-icon>
+                Send
+            </button>
+        </div>
+    </form>
+
+    <div *ngIf="ifSubmitSuccessContainer" #submitSuccessContainer fxFlex class="submit-success-container" fxLayout="column" fxLayoutAlign="center center">
+        <mat-icon class="submit-success-icon" fontSet="material-icons">check_circle</mat-icon>
+        <span class="mat-headline" align="center">Thank you for your time filling out the form.
+            <br> Will get back to you soon!</span>
+    </div>
+
+</div>

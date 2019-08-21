@@ -1,0 +1,15 @@
+<div class="page-section" [style.height]="screenHeight + 'px'" [style.background]="'silver'" fxLayout="column" fxLayoutAlign="center center">
+    <span class="mat-display-2" align="center">Let's Login First ;-)</span>
+    <span class="mat-subheading-1" align="center">Login and unlock all the secret features!</span>
+    <form (submit)="onLoginClick()" class="page-section" fxLayout="column" fxLayoutAlign="center center">
+        <mat-form-field>
+            <input name="username" [(ngModel)]="loginForm.username" #usernameInput type="text" matInput placeholder="Username" [disabled]="loginIsLoading">
+        </mat-form-field>
+        <mat-form-field>
+            <input name="password" [(ngModel)]="loginForm.password"  type="password" matInput placeholder="Password" [disabled]="loginIsLoading">
+        </mat-form-field>
+        <div fxFlex="noshrink" fxLayout="column">
+            <button [disabled]="loginIsLoading" type="submit" mat-button>Login</button>
+        </div>
+    </form>
+</div>

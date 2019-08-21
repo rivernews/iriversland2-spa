@@ -1,0 +1,206 @@
+<div class="design-lang-system-wrapper">
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'100vh'"
+        [style.background]="'silver'">
+        <span class="mat-display-1" align="center" fxHide.lt-md>Design Lab</span>
+        <span class="mat-display-2" align="center" fxHide.gt-sm>Design Lab</span>
+        <span class="mat-subheading-1" align="center" [style.max-width]="'700px'">
+            I experiment and play with different components and prototype new features. 
+            Particularly, I define a Design Language System. It is a way to define design guidelines that can be reused. Spec are assigned to each web component instead of a whole page. In such
+            way, when these components are used in different pages, design can be seamlessly applied through the whole website.
+            It is a modularized way to design, and aligns with the Reuse Spirit in software development.
+        </span>
+    </div>
+
+    <!-- Color Palette -->
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Colors</span>
+        <span class="mat-subheading-1">Defining the color palette used in this website</span>
+    </div>
+    <div class="page-section" [style.width]="'100vw'" fxLayout="row wrap">
+        <ng-container *ngFor="let color of colorPaletteDemo">
+            <div fxFlex [class]="'fill-' + color.type + '-color'" [style.height]="'200px'" fxLayout="column" fxLayoutAlign="center center">
+                <span class="mat-body-1">{{color.type | uppercase}}</span>
+                <span class="mat-body-1">{{color.value | uppercase}}</span>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Typography -->
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Typography</span>
+        <span class="mat-subheading-1">Demonstraring the typography system I use in this website</span>
+    </div>
+    <div class="page-section" fxLayout="column" [style.background]="'lightgray'">
+        <span class="mat-body-1" align="center">Typography for webpage structures and components such as header, body, cards or footer.</span>
+        <span class="mat-display-1" fxHide.lt-md>mat-Display-1</span>
+        <span class="mat-display-1" fxHide.gt-sm>mat-Dis-1</span>
+        <span class="mat-display-2">mat-Display-2</span>
+        <span class="mat-display-3">mat-Display-3</span>
+        <span class="mat-display-4">mat-Display-4 & h1</span>
+        <span class="mat-headline">mat-headline & h2</span>
+        <span class="mat-title">mat-title & h3</span>
+        <span class="mat-subheading-1">mat-subheading-1 & h4</span>
+        <span class="mat-subheading-2">mat-subheading-2</span>
+        <span class="mat-caption">mat-caption</span>
+        <span class="mat-overline">MAT-OVERLINE</span>
+
+        <span class="mat-body-1">
+            mat-body-1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
+            sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies
+            nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet
+            nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis
+            eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend
+            tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in,
+            viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
+            Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus,
+            tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc,
+            blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien
+            ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
+            fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue
+            velit cursus nunc,
+        </span>
+        <br>
+        <span class="mat-body-2">
+            mat-body-2 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
+            sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies
+            nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet
+            nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis
+            eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend
+            tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in,
+            viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
+            Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus,
+            tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc,
+            blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien
+            ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
+            fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue
+            velit cursus nunc,
+        </span>
+    </div>
+    <div class="page-section" [style.fontFamily]="'Roboto'" fxLayout="column" [style.background]="'ghostwhite'">
+        <span class="mat-body-1" align="center">Typography used in articles such as case studies and blog posts.</span>
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+        <h4>Heading 4</h4>
+        <p>
+            Paragraph Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
+            natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque
+            eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate
+            eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
+            pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean
+            leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat
+            a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies
+            nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
+            condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit
+            vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut
+            libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
+            fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue
+            velit cursus nunc,
+        </p>
+    </div>
+    <div class="page-section" fxLayout="column" [style.background]="'gainsboro'">
+        <span class="mat-body-1" align="center">Additional typography in Angular Material's style system.</span>
+        <span class="mat-h1">mat-h1</span>
+        <span class="mat-h2">mat-h2</span>
+        <span class="mat-h3">mat-h3</span>
+        <span class="mat-h4">mat-h4</span>
+        <span class="mat-h5">mat-h5</span>
+        <span class="mat-h6">mat-h6</span>
+    </div>
+
+    <!-- Controls -->
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Controls</span>
+        <span class="mat-subheading-1">Demonstraring buttons available in the Angular Material 2 ecosystem</span>
+    </div>
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center">
+        <span class="mat-body-1" align="center">Buttons with different colors in palette</span>
+        <div *ngFor="let color of ['', 'primary', 'accent', 'warn']" fxFlexFill fxLayout="row wrap" fxLayoutAlign="space-around stretch"
+            [style.margin]="'10px 0'">
+            <a mat-button [color]="color">mat-button</a>
+            <a mat-raised-button [color]="color">mat-raised-button</a>
+            <a mat-stroked-button [color]="color">mat-stroked-button</a>
+            <a mat-flat-button [color]="color">mat-flat-button</a>
+        </div>
+        <span class="mat-body-1" align="center">Fabs and icon buttons with different colors in palette</span>
+        <div *ngFor="let color of ['', 'primary', 'accent', 'warn']" fxFlexFill fxLayout="row wrap" fxLayoutAlign="space-around stretch"
+            [style.margin]="'10px 0'">
+            <div>
+                <a [color]="color" mat-icon-button aria-label="icon button example">
+                    <mat-icon fontSet="material-icons">account_circle</mat-icon>
+                </a>
+                <span class="mat-body-1">mat-icon-button</span>
+            </div>
+            <div>
+                <a [color]="color" mat-fab aria-label="fab button example">
+                    <mat-icon fontSet="material-icons">account_circle</mat-icon>
+                </a>
+                <span class="mat-body-1">mat-fab</span>
+            </div>
+            <div>
+                <a [color]="color" mat-mini-fab aria-label="mini fab button example">
+                    <mat-icon fontSet="material-icons">account_circle</mat-icon>
+                </a>
+                <span class="mat-body-1">mat-mini-fab</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Background -->
+    <div fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Media Back-ground</span>
+        <span class="mat-subheading-1" align="center" >Overlaid video or image background on a text area.</span>
+    </div>
+    <div class="video-background-container" fxLayout="column" fxLayoutAlign="center center">
+        <video class="video-background" autoplay muted loop playsinline>
+            <source src="https://s3.us-east-2.amazonaws.com/iriversland2-media/editor_uploads/home/501_Image+uploaded+from+iOS.MOV" type="video/mp4">
+        </video>
+        <span class="mat-display-3">Headline.</span>
+        <span class="mat-subheading-1" align="center" >Only concise and restricted amount of text here.</span>
+    </div>
+
+    <!-- Highlighted Case Study -->
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Highlighted Cases</span>
+        <span class="mat-subheading-1">Demonstraring highlighted case studies and a light-weighted editor.</span>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center" [style.background-color]="'whitesmoke'" >
+        <ng-container *ngIf="sampleHighlightedCaseStudy">
+            <app-highlighted-case-study 
+                [highlightedCaseStudy]="sampleHighlightedCaseStudy"
+                [isLogin]="true"
+                [highlightedCaseStudyIndex]="0"  >
+            </app-highlighted-case-study>
+        </ng-container>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.min-height]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Form</span>
+        <span class="mat-subheading-1">Demonstraring form control for contact me</span>
+    </div>
+    <div class="page-section" [style.background-color]="'whitesmoke'" [style.min-height]="'80vh'" >
+        <app-contact-form 
+            headlineText="Form Title Here"
+            [descriptionText]="'Form description here. Implemented the highest AAA accessibility level and audited by Lighthouse.'"></app-contact-form>
+    </div>
+
+    <!-- Rich Text Editor -->
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Rich Text Editor</span>
+        <span class="mat-subheading-1">Demonstraring customized rich text editor for posts and case studues</span>
+    </div>
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.background-color]="'whitesmoke'" >
+        <ckeditor
+            [editor]="documentCustomCkeditor"
+            [data]="documentCustomCkeditorPlaceholderText"
+            [config]="documentCkeditorConfig" ></ckeditor>
+    </div>
+</div>

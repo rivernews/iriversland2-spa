@@ -1,0 +1,96 @@
+/** 
+*
+* Color Palette
+* https://material.io/tools/color
+*
+*/
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// Usage: mat-palette(color, default, lighter-variant, darker-variant);
+$primary-color-starter:     mat-palette($mat-teal, 700);
+$accent-color-starter:      mat-palette($mat-orange, 100);
+$warn-color-starter:        mat-palette($mat-deep-orange);
+
+
+// Based on color palette generate theme
+$light-theme: mat-light-theme($primary-color-starter, $accent-color-starter, $warn-color-starter);
+$light-theme-primary-color-palette: map-get($map: $light-theme, $key: primary);
+$light-theme-accent-color-palette: map-get($map: $light-theme, $key: accent);
+$light-theme-warn-color-palette: map-get($map: $light-theme, $key: warn);
+$light-theme-foreground-color-palette:  map-get($light-theme, foreground);
+
+$dark-theme: mat-dark-theme($primary-color-starter, $accent-color-starter, $warn-color-starter);
+$dark-theme-foreground-color-palette:  map-get($dark-theme, foreground);
+
+.light-theme {
+    @include angular-material-theme($light-theme);
+}
+.dark-theme {
+    @include angular-material-theme($dark-theme);
+}
+
+// Default
+* {
+    @extend .light-theme ;
+}
+
+
+
+
+
+
+/*
+* 
+* Globally usable color classes 
+*
+*/
+
+// Custom Sass colors vars (will be available in all the project)
+$light-theme-primary-color: mat-color($light-theme-primary-color-palette);
+$light-theme-accent-color: mat-color($light-theme-accent-color-palette);
+$light-theme-warn-color: mat-color($light-theme-warn-color-palette);
+
+.fill-primary-color {
+    background-color: $light-theme-primary-color;
+}
+.fill-accent-color {
+    background-color: $light-theme-accent-color;
+}
+.fill-warn-color {
+    background-color: $light-theme-warn-color;
+}
+
+.dark-theme-text {
+    color: mat-color($dark-theme-foreground-color-palette, text);
+}
+.light-theme-text {
+    color: mat-color($light-theme-foreground-color-palette, text);
+}
+
+
+
+
+/*
+*
+* How to use theme in your own components
+* https://medium.com/@tomastrajan/the-complete-guide-to-angular-material-themes-4d165a9d24d1
+*
+*********************
+
+@import '~@angular/material/theming';
+
+$one-color-palette | $foreground-color-palette | $background-color-palette 
+    : map-get($theme, primary | accent | warn | foreground | background);
+
+CSS-SELECTOR {
+    *-color: mat-color($one-color-palette, (optional) text | card | base | divider...);
+    *-color: mat-color($one-color-palette, lighter | lighter-contrast...);
+    *-color: mat-color($foreground-color-palette, text | disabled...);
+    *-color: mat-color($background-color-palette, hover | card...);
+}
+
+** You cannot use this in component's style sheet. 
+You have to create theme scss for that component, 
+and import this component theme scss in global styles.scss **
+
+*********************/

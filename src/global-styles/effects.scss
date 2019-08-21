@@ -1,0 +1,226 @@
+/*
+*
+* CSS Animation
+* https://www.w3schools.com/css/css3_animations.asp
+*
+*/
+
+.fade-out {
+    animation-name: fade-out-keyframes;
+    animation-duration: 0.15s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.fade-in {
+    animation-name: fade-in-keyframes;
+    animation-duration: 0.25s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes fade-out-keyframes {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in-keyframes {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+// animation for loading in image background
+.image-background {
+    transition: opacity 1s;
+    opacity: 0;
+    &.ng-lazyloaded {
+        opacity: 1;
+    }
+}
+
+
+
+
+
+// Shaded background
+// Usage: 
+// <parent class="image-background-container shaded" >
+//      <image-DOM class="image-background (scroll-with-page)" 
+//          (optional): lazyLoad="URL" [style.background-position]="optional" offset="optional" (onLoad)="optional" >
+
+.image-background-container.shaded {
+
+    @extend .dark-theme-text ;
+    
+    // (Required) let background image onload and shaded
+    .image-background {
+        z-index: -1; // push back image so other contents can overlay on it
+
+        // also has ng-lazyloading for use
+        &.ng-lazyloaded {
+            &::before{
+                @include pinned-box-mixin($no-background: true);
+                content: " ";
+                background-color: rgba($color: black, $alpha: 0.6);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+// Shaded image background w/ high contrast text overlay; optional hover zoom-in effect
+/*
+<.themed-actions-container (optional).zoom-in-hover-effect >
+    <.image-background-container .themed-action-container>
+        <.image-background .themed-action>    
+        <.shadowed-text-container>  <----- for theme action's text shaded effect
+            <.evenly-shadowed-text>
+*/
+
+.themed-actions-container {
+    // need to be lower than headline middle, 
+    // in order to let their (headline middle) shadow take effect on this headline actions area.
+    // .image-background-container z-index is set to 1, so we need to be lower than that
+    z-index: 0; 
+
+    // initial state & transition spec
+    .themed-action-container {
+        
+        .shadowed-text-container {
+            @include pinned-box-mixin();
+            background-color: rgba($color: black, $alpha: 0.7);
+        }
+    }
+}
+
+// hover effect: zoom in background image 
+.themed-actions-container.zoom-in-hover-effect {
+
+    // initial state & transition spec
+    .themed-action-container {
+        overflow: hidden;
+
+        .shadowed-text-container {
+            // @include pinned-box-mixin();
+            
+            // background-color: rgba($color: black, $alpha: 0.7);
+            @include set-transition-promptly(background-color);
+        }
+
+        .image-background.themed-action {
+            @include set-transition-promptly(transform);
+        }
+    }
+    
+    .themed-action-container:hover {
+        cursor: pointer;
+
+        .shadowed-text-container {
+            background-color: rgba($color: black, $alpha: 0.2);
+        }
+
+        .image-background.themed-action {
+            transform: scale(1.2) translate3d(0,0,-1px);
+        }
+    }
+}
+
+// adjust text contrast
+.shadowed-text-container {
+    .evenly-shadowed-text {
+        text-shadow: 0 0 7px rgba(0,0,0, 0.6);
+        z-index: 2 // required by bottom actions (but not themed actions)
+    }
+}
+
+
+
+
+
+
+// Glass background
+// Usage:
+// <parent class="image-background-container glass-overlay"
+//      <image-DOM class="image-background glass-overlay">
+//      <other-image-DOM class="image-background (glass-overlay)">
+//      <content class="glass-overlay-content">
+// Caution:
+// don't use any margin/padding on .image-background-container
+.image-background-container.glass-overlay {
+    overflow: hidden; // warning: polluting global styles
+    .image-background.glass-overlay {
+        overflow: hidden;
+        background-color: white;
+        transform: scale(2) translate3d(0,0,-1px); // trnaslate3d turns on hardware acceleration
+        backface-visibility: hidden; // avoid glitches when setting 3d z axis
+        filter: blur(20px) brightness(1) contrast(1) opacity(0.3);
+    }
+    .glass-overlay-content {
+        // give position relative, so it will have higher layer (z-index) 
+        // than .image-background-container
+        // don't need to specify z-index because it's successive content after
+        // .image-background-container and will automatically be higher layer
+        position: relative;
+    }
+}
+
+
+
+
+/** 
+*
+* Corner fixed-positioned control elements
+* 
+* Using relative controls: make sure to set the parent with
+* .relative-corner-control-container, so that relative control is positioned correctly.
+*
+*/
+
+$horizontal-corners: left, right;
+$vertical-corners: top, bottom;
+@mixin page-button-control-base ($position) {
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    position: $position ;
+    z-index: 999;
+}
+
+@each $horizontal-corner in $horizontal-corners {
+    @each $vertical-corner in $vertical-corners {
+        .#{$horizontal-corner}-#{$vertical-corner}-control {
+            @include page-button-control-base(fixed);
+            #{$horizontal-corner}: 20px;
+            #{$vertical-corner}: 20px;
+        }
+    }
+}
+@each $horizontal-corner in $horizontal-corners {
+    @each $vertical-corner in $vertical-corners {
+        .relative-#{$horizontal-corner}-#{$vertical-corner}-control {
+            @include page-button-control-base(absolute);
+            #{$horizontal-corner}: 20px;
+            #{$vertical-corner}: 20px;
+        }
+    }
+}
+.relative-corner-control-container {
+    position: relative;
+}

@@ -1,0 +1,111 @@
+@import '~@angular/material/theming';
+
+@import "../../global-styles/responsive.scss";
+$gt-sm: map-get($breakpoints, gt-sm);
+$lt-md: map-get($breakpoints, lt-md);
+
+@import "../../global-styles/mixins.scss";
+$primary-shadow-color: rgba(0,0,0,0.2);
+$secondary-shadow-color: rgba(0,0,0,0.1);
+
+.document-list-wrapper {
+    background-color: whitesmoke;
+
+    .document-list-container {
+        padding: 30px;
+
+        .tag-chips-field {
+            mat-chip {
+                @include set-transition-promptly(background-color color, $duration: 0.5s);
+            }
+        }
+        
+        .document-cards-container {
+            display: grid;
+        
+            grid-column-gap: 0px;
+            @media #{$gt-sm} {
+                grid-template-columns: 1fr 1fr;
+                @include set-horizontal-margin(20px);
+            }
+            @media #{$lt-md} {
+                grid-template-columns: 1fr;
+                $horizontal-margin: 1vw;
+                @include set-horizontal-margin(1vw);
+            }
+        
+            margin-bottom: 30px; /* space between doc list bottom and footer */
+        }
+    }
+}
+
+.themed-action-container {
+    @include box-shadow-mixin($offset-y: 2px, $blur-radius: 30px, $spread-radius: 0px, $color: rgba(0, 0, 0, 0.9));        
+}
+
+mat-card.mat-card.document-card {
+    /* card gap margin */
+    @media #{$gt-sm} {
+        @include set-vertical-margin(30px, 0);
+        @include set-horizontal-margin(15px);
+    }
+    @media #{$lt-md} {
+        @include set-vertical-margin(30px, 0);
+    }
+
+    border-radius: 10px;
+
+    @include mat-elevation(0);
+    @include box-shadow-mixin-multiple(
+        2px 5px $primary-shadow-color
+        1px 2px $secondary-shadow-color
+    );
+    @include set-transition-promptly(box-shadow, 0.5s) ;
+
+    /** adjust spacing in card */
+    .doc-card-content {
+        padding-bottom: 6px;
+
+        .doc-tags-container {
+            margin-top: 8px;
+        }
+    }
+}
+
+mat-card.mat-card.document-card:hover {
+    cursor: pointer;
+    
+    @include box-shadow-mixin-multiple(
+        8px 40px $primary-shadow-color
+        4px 16px $secondary-shadow-color
+    );
+}
+
+// avoid border when selecting or dragging cards, chips, ...
+* {
+    outline: 0;
+}
+
+
+
+
+
+.progress-bar {
+    @include set-vertical-margin(20px);
+}
+
+
+
+
+
+
+/** 
+*
+* Patch for fixing material's layout bugs
+*
+**/
+
+// eliminate height change when applying ripple effect on cards: https://stackoverflow.com/questions/48610004/adding-ripple-to-mat-card-without-the-card-expanding-on-click-touch
+mat-card.mat-card[matRipple] mat-card-content {
+    margin-bottom: 0 ;
+}

@@ -1,0 +1,43 @@
+@import "../../global-styles/mixins.scss";
+@import "../../global-styles/responsive.scss";
+
+$big-gap: 60px;
+$small-gap: 50px;
+
+.secondary-section {
+    &:not(:last-of-type) {
+        margin-bottom: $small-gap;
+    }
+}
+
+.primary-section{
+
+    & > :first-of-type {
+        margin-top: $big-gap;
+    }
+
+    & > :not(:first-of-type):not(:last-of-type) {
+        @extend .secondary-section ;
+    }
+
+    & > :last-of-type {
+        padding-bottom: $big-gap*2;
+    }
+}
+
+@include bp(lt-md) {
+    .education-content {
+        .institute-container {
+            text-align: center;
+            &:not(:last-child) {
+                margin-bottom: 23px;
+            }
+        }
+    }
+}
+
+
+
+.brand-row {
+    margin-bottom: 40px;
+}

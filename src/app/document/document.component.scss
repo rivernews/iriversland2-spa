@@ -1,0 +1,113 @@
+@import "../../global-styles/responsive.scss";
+$gt-md: map-get($breakpoints, gt-md);
+$md: map-get($breakpoints, md);
+$gt-sm: map-get($breakpoints, gt-sm);
+$lt-md: map-get($breakpoints, lt-md);
+$lt-sm: map-get($breakpoints, lt-sm);
+
+@import "../../global-styles/typography.scss";
+@import "../../global-styles/mixins.scss";
+
+$ckeditor-first-level-container-selector: ".ck-content";
+
+
+/** grid layout setup */
+::ng-deep div#{$ckeditor-first-level-container-selector} {
+    display: grid;
+
+    @media #{$gt-md} {
+        grid-template-columns: 1fr minmax(55vw, 55vw) 1fr;
+    }
+    @media #{$md} {
+        grid-template-columns: 1fr minmax(60vw, 60vw) 1fr;
+    }
+    @media #{$lt-md} {
+        grid-template-columns: 1fr minmax(85vw, 85vw) 1fr;
+    }
+
+    & > * {
+        grid-column: 2;
+    }
+
+    // override / remove / cancel ckeditor's unwatned space
+    padding: 0;
+    border: 0;
+    figure {
+        margin: 15px 0 0 0; // leave some space above. (margin-bottom will be added by figcaption)
+    }
+
+}
+
+
+@mixin img-inline-and-round-border() {
+    img {
+        grid-column: 2;
+        border-radius: 6px; // optional
+    }
+}
+
+::ng-deep .doc-component-container {
+    @include enable-hardware-accelerated-transform();
+
+    .doc-header-container {
+        padding-top: 20px;
+    }
+
+    // Adjust image showing in editor
+    div.doc-body-container {
+        
+        div.doc-editor-container {
+            div#{$ckeditor-first-level-container-selector} {
+                figure.image {
+                    max-width: 100%; // override ckeditor's side style
+
+                    // full width size image
+                    &:not(.image-style-side){
+                        @media #{$gt-sm} {
+                            grid-column: 1 / -1;
+                        }
+                        // if mobile device then same as inline
+                        @media #{$lt-md} {
+                            @include img-inline-and-round-border();
+                        }
+                    }
+
+                    // inline width size image
+                    &.image-style-side {
+                        @include img-inline-and-round-border();
+                    }
+
+                    figcaption {
+                        // All image caption text in editor: set to center alignment
+                        margin: 0;
+                        text-align: center;
+                        @extend .mat-caption ;
+                    }
+                }
+
+                // when not login, eliminate / remove / cancel ckeditor's image outline in read-only mode
+                &:not([contentEditable=true]) figure.image.ck-widget {
+                    &.ck-widget:hover, &.ck-widget:not(:hover)
+                    {
+                        outline: none;
+                    }
+                    & > figcaption {
+                        /* 
+                            TODO: some issues, how to distinguish empty / not empty? When empty, we want to hide, but want to show when not empty. 
+                            Current work around: always add caption to image
+                        */
+                        // display: none; 
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// Give top and down spacing for progress bar
+.progress-bar-container {
+    mat-progress-spinner {
+        margin: 20px auto;
+    }
+}

@@ -1,0 +1,65 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <ng-container *ngIf="highlightedCaseStudy">
+
+        <!-- highlighted case studies list -->
+        <div #highlightedCaseStudyContainer fxLayout.gt-sm="row" [style.min-height]="'50vh'"
+            class="highlighted-case-study-container relative-corner-control-container image-background-container">
+
+            <!-- cover image for desktop & mobile -->
+            <div *ngIf="!responsiveService.isMobilePhone" class="image-background" [lazyLoad]="highlightedCaseStudy.highlighted_image || highlightedCaseStudy.case_study_cover_image" [offset]="600" [style.background-position]="highlightedCaseStudy.highlighted_image_css_position"></div>
+            <div *ngIf="responsiveService.isMobilePhone" class="image-background" [lazyLoad]="highlightedCaseStudy.highlighted_image || highlightedCaseStudy.case_study_cover_image" [offset]="600" 
+                [style.background-position]="highlightedCaseStudy.highlighted_image_css_position_mobile"></div>
+
+            <!-- is_public -->
+            <div *ngIf="isLogin" class="relative-right-top-control">
+                <app-labeled-switch [(checked)]="highlightedCaseStudy.is_public"></app-labeled-switch>
+            </div>
+
+            <!-- submit button -->
+            <div *ngIf="isLogin" class="relative-right-bottom-control">
+                <button *ngIf="true" mat-mini-fab [disabled]="isSubmitting" (click)="onSubmitClick(highlightedCaseStudy)" aria-label="submit button">
+                    <mat-icon fontSet="material-icons">send</mat-icon>
+                </button>
+            </div>
+
+            <span fxFlex="10%"></span>
+
+            <div class="text-container" #highlightedCaseStudyTextContainer fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+                <span class="mat-overline">highlighted case study {{highlightedCaseStudyIndex + 1}}</span>
+                <span class="mat-display-2">{{highlightedCaseStudy.case_study_title}}</span>
+                <div class="highlighted-contents-wrapper" fxLayout="row" fxLayoutAlign="space-between stretch" fxLayout.lt-md="column" [style.min-height]="'35vh'">
+                    <div fxFlex="55%" class="highlighted-contents-left-half" fxLayout="column" fxLayoutAlign="space-between start">
+                        <div class="highlighted-contents-problem" fxLayout="column">
+                            <span class="mat-caption">Project Focus</span>
+                            <div class="mat-body-1 shaded-input-field" [contentEditable]="isLogin" [innerText]="highlightedCaseStudy.highlighted_abstract"
+                                (keyup)="highlightedCaseStudy['edited__highlighted_abstract'] = $event.target.textContent">
+                            </div>
+                        </div>
+                        <div class="highlighted-contens-leader-words" fxLayout="column">
+                            <span>
+                                <a mat-flat-button color="primary" routerLink="/portfolio/{{highlightedCaseStudy.case_study_id}}">
+                                    {{highlightedCaseStudy.leader_action}}
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <div fxFlex="35%" class="highlighted-contents-right-half" fxLayout="column" fxLayoutAlign="space-between start">
+                        <div class="highlighted-contents-my-role" fxLayout="column">
+                            <span class="mat-caption">My Role</span>
+                            <span class="mat-body-1" *ngFor="let role of highlightedCaseStudy.case_study_roles.split(',')">
+                                {{role}}
+                            </span>
+                        </div>
+                        <div class="highlighted-contents-demonstrated-skills" fxLayout="column">
+                            <span class="mat-caption">Demostrated Skills</span>
+                            <span class="mat-body-1" *ngFor="let demoSkill of highlightedCaseStudy.case_study_demo_skills.split(',')">
+                                {{demoSkill}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span fxFlex="10%"></span>
+        </div>
+    </ng-container>
+</div>

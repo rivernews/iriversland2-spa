@@ -1,0 +1,80 @@
+@import '~@angular/material/theming';
+
+
+
+/****** 
+    App Bar 
+******/
+$toolbar-height: 50px;
+$toolbar-item-height: 40px;
+
+/* transparent navigation bar */
+.mat-toolbar.mat-toolbar-multiple-rows  {
+    position: fixed;
+    z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar. The z-index property specifies the stack order of an element. */
+    background-color: rgba(0, 0, 0, 0.2);
+
+    min-height: initial; /* override height to adapt content. default 64px */
+}
+
+.mat-toolbar-row {
+    height: $toolbar-height; /* toolbar height. default 64px. Dependency: bigger than logo & nav tabs */
+}
+
+/* logo & tab */
+nav.mat-tab-nav-bar,
+header .logo-wrapper {
+    border-bottom: transparent; /* transparent bottom border (inactive items underline) */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 3px;
+}
+
+
+
+
+/****** 
+    Logo 
+******/
+
+.logo-wrapper {
+    color: dimgray;
+}
+
+/* for banner */
+header .logo-wrapper {
+    min-height: $toolbar-item-height; /* logo button's height. (logo will resize to fit) */
+    min-width: 80px; /* logo button's width. (logo will resize to fit) */
+}
+/* for drawer */
+::ng-deep mat-sidenav .logo-wrapper {
+    min-height: 50px;
+}
+
+
+
+
+
+/****** 
+    Tab 
+******/
+
+/* tab ink bar */
+::ng-deep nav.mat-tab-nav-bar .mat-tab-links mat-ink-bar.mat-ink-bar {
+    background-color: black;
+}
+
+/* tab buttons */
+::ng-deep.mat-tab-link[mat-tab-link] {
+    height: $toolbar-item-height; /* reduce tab button height here. Default 48px. */
+
+    padding: 0 17px; /* reduce tab button width here. Default 0 24px. */
+    min-width: 0px; /* reduces tab button width here */
+
+    font-size: 0.7rem; /* reduces tab font size here */
+}
+
+/* for drawer */
+::ng-deep mat-sidenav div [mat-button] {
+    padding: 1.5rem 0;
+    width: 12rem;
+}

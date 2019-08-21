@@ -1,0 +1,50 @@
+@import "../../../global-styles/mixins.scss";
+@import "../../../global-styles/responsive.scss";
+
+.highlighted-contents-my-role,
+.highlighted-contents-demonstrated-skills {
+    margin-bottom: 20px;
+}
+
+
+
+
+
+.highlighted-case-study-container {
+    @include bp(lt-sm) {
+        padding-top: 75vh;
+    }
+    @include bp(gt-xs) {
+        padding-top: 65vh;
+    }
+    padding-bottom: 30vh;
+
+    .image-background {
+        @include bp(lt-sm) {
+            background-attachment: scroll;
+        }
+        @include bp(gt-xs) {
+            background-attachment: fixed; /** mobile does not support fixed due to performace concerns */
+        }
+    }
+
+    /** animation initial state - lighter background */
+    &:not(.shaded) {
+        color: white;
+        .image-background.ng-lazyloaded::before {
+            content: " ";
+            background-color: rgba($color: black, $alpha: 0.0);
+        }
+    }
+
+    /** animation emerged state - darker background */    
+    .image-background {
+        &.ng-lazyloaded::before {
+            @include set-transition-promptly(background-color, 0.8s);            
+        }
+    }
+
+    .text-container {
+        position: relative;
+    }
+}

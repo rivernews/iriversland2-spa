@@ -1,0 +1,1 @@
+$(npm bin)/ng serve -o

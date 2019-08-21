@@ -1,0 +1,99 @@
+<div class="doc-component-container" fxLayout="row wrap" fxLayoutAlign="center" [style.background]="'white'" [style.max-width]="'100vw'">
+
+    <div fxFlex="100%" [style.min-height]="'50vh'" class="relative-corner-control-container"
+        [class.image-background-container]="document?.cover_image"
+        [class.shaded]="document?.cover_image" >
+        <!-- Doc Header -->
+        <div class="doc-header-container" fxFlexFill fxLayout="row" fxLayoutAlign="space-between end" 
+            [lazyLoad]="document.cover_image || ''"
+            [class.image-background]="document?.cover_image"
+            [class.shadowed-text-container]="document?.cover_image"
+            [style.background-size]="'cover'"
+            [style.background-position]="'0 50%'"
+            [style.background-color]="'lightgray'" >
+            <span fxFlex="10%"></span>
+            <div [class.dark-theme-text]="document?.cover_image"
+                [class.evenly-shadowed-text]="document?.cover_image"
+                fxFlex fxLayout="column" fxLayoutAlign="end stretch" [style.max-width]="'100vw'">
+                <div *ngIf="isLogin && document.content" fxFlexFill fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between" fxLayout.lt-md="column">
+
+                    <!-- Is Public -->
+                    <app-labeled-switch (checkedChange)="isDirty = true;" [(checked)]="document.is_public"></app-labeled-switch>
+
+                    <!-- Author -->
+                    <span *ngIf="!isCreateMode" class="mat-body-1">
+                        <mat-icon fontSet="material-icons">person</mat-icon>
+                        {{ document.username ? document.username : 'No Author' }}
+                    </span>
+
+                    <!-- Order -->
+                    <span>
+                        <mat-icon fontSet="material-icons">sort</mat-icon>
+                        <span class="mat-body-1 shaded-input-field" [textContent]="document?.order" 
+                            (input)="document['edited__order'] = ($event.target.textContent); isDirty = true;"
+                            contentEditable="true"></span>
+                    </span>
+                </div>
+
+                <!-- Title -->
+                <span *ngIf="showTimeStamp && document.content" [style.margin-bottom]="'20px'" class="mat-caption" align="right">Last edited at {{ document[showTimeStamp] | date:'MMMM d, y, h:mm a' }}</span>
+                <div class="shaded-input-field mat-display-2"
+                    
+                    fxFlexFill [textContent]="document?.title" 
+                    (input)="document['edited__title'] = $event.target.textContent; isDirty = true;"
+                    [contentEditable]="isLogin"></div>
+
+                <!-- Tag Chips -->
+                <ng-container *ngIf="showChips && document && documentAttributeNameForTagChips && document[documentAttributeNameForTagChips]">
+                    <mat-form-field fxFlex.gt-sm [class.shaded-input-field]="isLogin" [class.input-field-no-underline]="true" fxFlexFill>
+                        <!-- when visitors (not login), show chips for display -->
+                        <mat-chip-list #chipList *ngIf="!isLogin" >
+                            <mat-chip *ngFor="let tag of document[documentAttributeNameForTagChips].split(',')" [selectable]="false" [disabled]="true" [removable]="false">
+                                {{tag}}
+                            </mat-chip>
+                        </mat-chip-list>
+                        <!-- when admin (logged in), show raw input -->
+                        <input *ngIf="isLogin" matInput 
+                            [value]="document[documentAttributeNameForTagChips]" (input)="document['edited__' + documentAttributeNameForTagChips] = $event.target.value ;isDirty = true;" >
+                    </mat-form-field>
+                </ng-container>
+            </div>
+            <span fxFlex="10%"></span>
+        </div>
+        <div *ngIf="isLogin && document.content" class="relative-right-bottom-control">
+            <button mat-mini-fab [disabled]="isSubmitting" (click)="onDeleteClick()">
+                <mat-icon fontSet="material-icons">delete</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="doc-body-container" fxFlex>
+        <div class="progress-bar-container" fxFlexFill fxLayout="column" fxLayoutAlign="center center" align="center" *ngIf="!document.content">
+            <mat-progress-spinner [diameter]="80" [strokeWidth]="4" [mode]="'indeterminate'"></mat-progress-spinner>
+        </div>
+        <!-- Doc Content (Rich Text Editor) Body -->
+        <div class="doc-editor-container">
+            <ckeditor [class.shaded-input-field]="isLogin" [config]="documentCKeditorConfig" [editor]="editorFactory"
+                (ready)="onEditorReady($event)" [(ngModel)]="document['content']"
+                (change)="onDocumentEditorContentChange($event)" ></ckeditor>
+        </div>
+
+        <!-- Back Button -->
+        <div *ngIf="document.content" class="doc-bottom-action-container">
+            <a mat-button (click)="goBack()">
+                <mat-icon fontSet="material-icons">keyboard_arrow_left</mat-icon>
+                Back
+            </a>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<div *ngIf="isLogin" class="right-bottom-control">
+    <button mat-mini-fab [disabled]="isSubmitting || !isDirty" (click)="onSubmitClick()">
+        <mat-icon fontSet="material-icons">send</mat-icon>
+    </button>
+</div>

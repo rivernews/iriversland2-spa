@@ -1,0 +1,85 @@
+<div [style.min-height]="'100vh'"  [style.background]="'whitesmoke'"
+fxLayout="column" >
+    <div
+    fxFlex.gt-sm fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start stretch" 
+    fxFlex.lt-md="noshrink" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center stretch">
+        <div 
+        fxFlex.gt-sm="35%"  
+         [style.background]="'gray'" >
+            <div class="selfie-img" 
+                [defaultImage]="'https://s3.us-east-2.amazonaws.com/iriversland2-media/editor_uploads/about/selfie_blurred.jpg'"
+
+                [lazyLoad]="'https://s3.us-east-2.amazonaws.com/iriversland2-media/editor_uploads/about/selfie.jpg'">
+            </div>
+        </div>
+        <div class="about-me-text-content-container" fxLayout="row"
+        fxFlex.gt-sm
+        fxFlex.lt-md="noshrink" >
+            <span fxFlex="11%" fxFlex.lt-md="10%"></span>
+            <div fxFlex fxLayout="column" fxLayoutAlign.gt-sm="center start" fxLayoutAlign.lt-md="start start">
+                <span [ngClass.gt-sm]="'mat-display-1'" [ngClass.lt-md]="'mat-display-3'">Engineering for the Experience</span>
+                <!-- <span [ngClass.gt-sm]="'mat-headline'" [ngClass.lt-md]="'mat-title'">I Listen, Engage, and Build</span> -->
+                <span class="mat-body-1">
+                    <br>
+                    I’m a Full Stack Engineer enthusiastic about user-centric design. 
+                    I enjoy taking ownership of engineering both backend and frontend 
+                    to create product that impacts people’s daily lives.
+                    <br><br>
+                    How can we engineer a better experience for the users? 
+                    Users want prompt and constant feedback from the 
+                    system they use, which creates new challenges 
+                    in development and requires complex logic in 
+                    both front and back end.  
+                    <br><br>
+                    My background in both Human-Computer Interaction 
+                    and Computer Science helps me understand users 
+                    needs and specialize in designing and building 
+                    systems that scale to meet performance and UX goals. 
+                </span>
+            </div>
+            <span fxFlex="19%" fxFlex.lt-md="10%"></span>
+        </div>
+    </div>
+</div>
+
+<app-major-roles></app-major-roles>
+
+<div class="passion-section"  [style.background]="'whitesmoke'">
+    <div fxFlex fxLayout="row" fxLayoutAlign="start start">
+        <span fxFlex="24%" fxFlex.lt-md="10%" ></span>
+        <div fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+            <span [ngClass.gt-sm]="'mat-display-1'" [ngClass.lt-md]="'mat-display-2'">Passion</span>
+            <span class="mat-body-1">
+                <br>
+                I'm inspired by how mental health can help us thrive and feel unlimited in fields that we master. I value well being as a
+                holistic approach for one's acheivement in both career and life.<br><br>
+                
+                I start asking myself, having my programming
+                background, how can I leverage my skills and apply them to make impactful product on people’s daily lives?
+                That's where I start my journey into the UX world, start becoming part of a larger community. Start contributing,
+                start thinking about meaning something to someone else.
+            </span>
+        </div>
+        <span fxFlex="24%" fxFlex.lt-md="10%"></span>
+    </div>
+</div>
+
+<!-- <mat-grid-list cols="1" [rowHeight]="screenHeight" [gutterSize]="'0'">
+    <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'whitesmoke'">
+        <div fxFlex fxFlexFill fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="10%"></span>
+            <div fxFlex fxFlexFill fxLayout="column" fxLayoutAlign="center stretch">
+                <span class="mat-display-1" fxHide.lt-md>Interest</span>
+                <span class="mat-display-2" fxHide.gt-sm>Interest</span>      
+                <mat-grid-list cols="3" rowHeight="fit" [style.height]="screenHeight*3/5 + 'px'" [gutterSize]="'4px'">
+                    <mat-grid-tile *ngFor="let photo of photos; let i = index" [style.background]="'gray'" [colspan]="1" [rowspan]="1">
+                        <mat-grid-tile-footer>
+                            <span class="mat-body-1">{{photo.label}}</span>
+                        </mat-grid-tile-footer>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+            <span fxFlex="10%"></span>
+        </div>
+    </mat-grid-tile>
+</mat-grid-list> -->

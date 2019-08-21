@@ -1,0 +1,79 @@
+<div class="document-list-wrapper themed-actions-container" fxLayout="column" fxLayoutAlign="center stretch">
+    <div fxFlex="1 0 calc(50vh)" class="image-background-container themed-action-container" fxLayout="column" fxLayoutAlign="center stretch">
+
+        <img class="image-background" [lazyLoad]="headImage.image?.url" [style.background]="'gray'" offset="999" alt="page head image">
+
+        <div class="shadowed-text-container" fxLayout="column" fxLayoutAlign="end center">
+            <div class="page-section dark-theme-text evenly-shadowed-text" fxLayout="column" fxLayoutAlign="end stretch">
+                <span 
+                    [ngClass.gt-sm]="'mat-display-1'"
+                    [ngClass.lt-md]="'mat-display-2'" >{{pageHeadlineText}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card contents. See more about template for angular 6: https://stackoverflow.com/questions/50842631/angular-6-ngtemplateoutlet-inside-ngfor-multiple-context and also https://stackoverflow.com/questions/46976570/how-to-render-multiple-ng-content-inside-an-ngfor-loop-using-angular-4 -->
+    <ng-template #cardContentsTemplate let-doc="doc">
+        <div *ngIf="showCoverImage" mat-card-image class="image" #cardCoverImage [style.height]="getResponsiveCardHeight(cardCoverImage)"
+            [style.background]="'lightgray'">
+            <img *ngIf="doc.cover_image" fxFlexFill [style.object-fit]="'cover'" [lazyLoad]="doc.cover_image" offset="999" [alt]="'cover image for ' + doc.title">
+        </div>
+        <mat-card-content class="doc-card-content" fxFlexFill fxLayout="column" fxLayoutAlign="space-between stretch" >
+            <div >
+                <span *ngIf="showTimeStamp" class="mat-overline">{{ doc[showTimeStamp] | date:'MMMM d, y, h:mm a' }}</span>
+                <span class="mat-headline" [style.display]="'inline'">{{doc.title}}</span>
+                <mat-icon *ngIf="!doc.is_public" fontSet="material-icons">lock</mat-icon>
+            </div>
+            <div class="doc-tags-container">
+                <mat-chip-list *ngIf="showChips && doc[documentAttributeNameForTagChips] && doc[documentAttributeNameForTagChips] != ''">
+                    <mat-chip *ngFor="let tag of doc[documentAttributeNameForTagChips].split(',')" disabled>{{tag}}</mat-chip>
+                </mat-chip-list>
+            </div>
+        </mat-card-content>
+    </ng-template>
+
+    <!-- Card list -->
+    <div *ngIf="documents" class="document-list-container" fxLayout="column" >
+        <mat-form-field class="input-field-no-underline tag-chips-field" *ngIf="showChips && collectiveTagList.length != 0 && documentAttributeNameForTagChips" >
+            <mat-chip-list [multiple]="true"
+                fxLayout="row wrap" fxLayoutAlign="center center"    >
+                <mat-chip *ngFor="let tag of collectiveTagList" 
+                    [matTooltip]="'Click to filter for contents about ' + tag.text"
+                    color="primary" 
+                    disableRipple
+                    [selectable]="true" [selected]="tag.selected" 
+                    (click)="tag.selected = ! tag.selected"
+                    (selectionChange)="tagSetListChanges($event)">{{tag.text}}</mat-chip>
+            </mat-chip-list>
+        </mat-form-field>
+
+        <div class="document-cards-container" @docListAnRef >
+            <!-- Cards layout for case studies -->
+            <ng-container *ngIf="apiQueryEndPoint == 'case-studies'" >
+                <mat-card class="document-card" @docCardAnRef *ngFor="let document of filteredDocuments" routerLink="{{document.id}}/" matRipple >
+                    <ng-container *ngTemplateOutlet="cardContentsTemplate; context:{ doc: document }"></ng-container>
+                </mat-card>
+            </ng-container>
+
+            <!-- Cards layout for posts -->
+            <ng-container *ngIf="apiQueryEndPoint == 'posts'" >
+                <mat-card class="document-card" @docCardAnRef *ngFor="let document of filteredDocuments" routerLink="{{document.id}}/" matRipple >
+                    <ng-container *ngTemplateOutlet="cardContentsTemplate; context: { doc: document }"></ng-container>
+                </mat-card>
+            </ng-container>
+        </div>
+    </div>
+
+    <div fxFlex align="center">
+        <mat-progress-spinner class="progress-bar" *ngIf="!documents" [diameter]="80" [strokeWidth]="4" [mode]="'indeterminate'">
+        </mat-progress-spinner>
+    </div>
+</div>
+
+
+
+<div *ngIf="isLogin" class="right-bottom-control">
+    <a mat-mini-fab routerLink="0/">
+        <mat-icon fontSet="material-icons">add</mat-icon>
+    </a>
+</div>

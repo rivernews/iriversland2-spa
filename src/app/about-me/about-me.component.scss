@@ -1,0 +1,12 @@
+@import "../../global-styles/responsive.scss";
+
+    
+.about-me-text-content-container {
+    @include bp(lt-md) {
+        padding-bottom: 60px;
+    }
+}
+
+::ng-deep .passion-section {
+    padding-bottom: 70px;
+}

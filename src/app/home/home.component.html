@@ -1,0 +1,106 @@
+<div class="home-headline" [style.height]="'100vh'" fxLayout="column" fxLayoutAlign="top stretch">
+    <div class="image-background-container" fxFlex="40%" [style.background-color]="'gray'" fxLayout="column" fxLayoutAlign="start stretch">
+
+        <div class="image-background" fxLayout="column" fxLayoutAlign="end stretch" lazyLoad="https://s3.us-east-2.amazonaws.com/iriversland2-media/editor_uploads/about/selfie.jpg"
+            [style.background-position]="'50% 12%'" [offset]="1">
+
+            <div class="middle-blur-container" fxFlex="100%" fxLayout="column" fxLayoutAlign="center center">
+
+                <div class="dark-theme-text headline-middle-text-container" align="center">
+                    <h1>SHAUNG CHENG</h1>
+                    <span class="mat-caption">UX | Full Stack Engineer</span>
+                    <span class="mat-caption">HCI Master's at University of Michigan</span>
+                    <span class="mat-caption">
+                        🔥 This website is coded from scratch! Check out the code repository
+                        <a target="_blank"  mat-icon-button rel="noopener" href="https://github.com/rivernews/iriversland2-public" aria-label="github">
+                            <mat-icon [style.transform]="'scale(1.7)'" fontSet="fab" fontIcon="fa-github"></mat-icon>
+                        </a>
+                        🔥 
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="themed-actions-container zoom-in-hover-effect" fxFlex="60%" [style.background-color]="'gray'" fxLayout.gt-sm="row"
+        fxLayoutAlign="start" fxLayout.lt-md="column">
+
+        <div class="image-background-container themed-action-container" fxFlex *ngFor="let headlineImage of HEADLINE_IMAGES">
+
+            <div class="image-background themed-action" [lazyLoad]="headlineImage.image.url" [style.background-color]="'gray'" offset="1"></div>
+            
+            <div class="shadowed-text-container" (click)="actionSurfaceOnClick(headlineImage, $event)" matRipple fxFlexFill fxLayout="column"
+                fxLayoutAlign="center center">
+                
+                <div class="dark-theme-text evenly-shadowed-text" fxLayout.gt-sm="column" fxLayoutAlign="center center" fxLayout.lt-md="row"
+                    fxLayoutAlign.lt-md="space-evenly stretch">
+                    
+                    <a mat-icon-button [style.transform]="'scale(1.5)'">
+                        <mat-icon fontSet="material-icons">{{headlineImage.icon}}</mat-icon>
+                    </a>
+                    <h2 [style.font-family]="'Roboto Condensed'" align="center">{{headlineImage.label}}</h2>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="page-section" *ngIf="!highlightedCaseStudies" align="center">
+    <mat-progress-spinner [diameter]="80" [strokeWidth]="4" [mode]="'indeterminate'"></mat-progress-spinner>
+</div>
+<ng-container *ngFor="let highlight of highlightedCaseStudies; let i = index">
+    <app-highlighted-case-study 
+        [highlightedCaseStudy]="highlight"
+        [isLogin]="isLogin"
+        [highlightedCaseStudyIndex]="i"   ></app-highlighted-case-study>
+</ng-container>
+
+<div class="page-section home-bottom-container" fxLayout="row" fxLayoutAlign="center stretch" [style.background-color]="'whitesmoke'">
+    <span fxFlex="5%"></span>
+    <div fxFlex fxLayout="column" fxLayoutAlign="center stretch">
+        
+        <!-- headline -->
+        <div class="content-section home-bottom-headline" fxLayout="column" fxLayoutAlign="center stretch">
+            <h1 align="center">Thanks For Visiting :)</h1>
+            <span class="mat-body-1" align="center">Check out more of my works and other stuff below!</span>
+        </div>
+
+        <!-- actions -->
+        <div class="themed-actions-container zoom-in-hover-effect bottom-middle-float-box-container" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center stretch"
+            fxLayout.lt-md="column" fxLayoutAlign.lt-md="center stretch">
+
+            <div class="themed-action-container image-background-container" fxFlex *ngFor="let action of HOME_BOTTOM_THEMED_ACTIONS">
+                
+                <div class="themed-action image-background" [lazyLoad]="action.image.url" offset="600"></div>
+                
+                <div class="shadowed-text-container" (click)="actionSurfaceOnClick(action, $event)" matRipple fxFlexFill fxLayout="column"
+                    fxLayoutAlign="center center">
+                    
+                    <div class="dark-theme-text evenly-shadowed-text" fxLayout.gt-sm="column" fxLayoutAlign="center center" fxLayout.lt-md="row"
+                        fxLayoutAlign.lt-md="space-evenly stretch">
+                        
+                        <a mat-icon-button [style.transform]="'scale(1.5)'">
+                            <mat-icon fontSet="material-icons">{{action.icon}}</mat-icon>
+                        </a>
+                        <h2 [style.font-family]="'Roboto Condensed'" align="center">{{action.label}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span fxFlex="5%"></span>
+</div>
+
+<!-- contact form -->
+<div fxLayout="row" fxLayoutAlign="center stretch" [style.min-height]="'80vh'" [style.background-color]="'whitesmoke'">
+    <span fxFlex="5%"></span>
+    <div class="content-section" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+        <app-contact-form fxFlexFill
+            headlineText="Let's Chat" 
+            descriptionText="Interested in having a chat? From UX design to dev,
+            anything you'd like to share with me, or even just a Hi! 😉"></app-contact-form>
+    </div>
+    <span fxFlex="5%"></span>
+</div>

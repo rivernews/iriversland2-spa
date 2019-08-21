@@ -1,0 +1,104 @@
+<div class="component-container image-background-container glass-overlay" fxLayout="row" fxLayoutAlign="center center" [style.min-height]="'100vh'" 
+    [style.background]="'lightgray'">
+    <div class="image-background glass-overlay"
+        lazyLoad="//s3.us-east-2.amazonaws.com/iriversland2-media/editor_uploads/about/selfie.jpg"
+        offset="1" alt="selfie"></div>
+    <span fxFlex="10%"></span>
+    <div class="primary-section glass-overlay-content" fxFlex fxLayout="column" fxLayoutAlign="space-between stretch">
+
+        <!-- Slogan -->
+        <div class="major-role-headline" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-around center" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start center">
+            <h1 align="center">I Work As A</h1>
+        </div>
+
+        <!-- Major Roles -->
+        <div class="major-role-content" fxLayout="row" fxLayoutAlign="space-between start" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
+            <div fxFlex="47%" fxLayout="column" fxLayoutAlign="start start">
+                <div fxFlexFill fxLayout="row" fxLayoutAlign="start center">
+                    <span class="mat-headline">Full Stack Engineer</span>
+                </div>
+                <span class="mat-body-1">
+                    I’m passionate about building user-facing features, 
+                    many of which requires seemless combination of both front and back end. 
+                    <br><br>
+                    I work on data model, views and API to implement 
+                    high performace back end, and I build reactive and 
+                    beautiful UI components in the front end.
+                </span>
+            </div>
+            <div fxFlex="47%" fxLayout="column" fxLayoutAlign="start start">
+                <div fxFlexFill fxLayout="row" fxLayoutAlign="start center">
+                    <span class="mat-headline">UX Engineer</span>
+                </div>
+                <span class="mat-body-1">
+                    I speak languages from both designer and developer, 
+                    and I appreciate the importance of UX.
+                    <br><br>
+                    I build modularized components and I care about 
+                    code maintainability for app to scale for 
+                    complex design spec.
+                </span>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="education-headline" fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start center">
+            <h1 align="center" [style.margin]="'0'" >Education</h1>
+        </div>
+        <div class="education-content" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-evenly start" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start center">
+            <div fxFlex="40%" class="institute-container" fxLayout="column" fxLayoutAlign.gt-sm="start start" fxLayoutAlign.lt-md="start center" *ngFor="let edu of educations">
+                <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">
+                    <div class="image-background-container" [style.height]="'80px'" fxFlex>
+                        <img class="image-background" [lazyLoad]="edu.media.url" offset="999"
+                            [style.object-fit]="'contain'" ngStyle.gt-sm="object-position: 0% 50%" [alt]="'logo for ' + edu.fullName">
+                    </div>
+                </div>
+                <h2 [style.font-family]="'Roboto Condensed'" >
+                    {{ edu.fullName }}
+                </h2>
+                <span class="mat-body-1">
+                    {{ edu.degree }}
+                </span>
+                <span class="mat-body-1">
+                    {{ edu.year }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Skills and Tools -->
+        <div class="skill-headline" fxLayout="row" fxLayoutAlign="center center" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start center">
+            <h1 align="center" [style.margin]="'0'" >Design & Dev Stack</h1>
+        </div>
+        <div class="skill-content" fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div class="brand-row" 
+                fxFlex.gt-sm="23%" fxFlex.lt-md="30%" fxFlex.lt-sm="45%" *ngFor="let tool of tools" 
+                fxLayout="column" fxLayoutAlign="start stretch" [style.height]="'80px'">
+
+                <div class="image-background-container" fxFlex>
+                    <img class="image-background" [lazyLoad]="tool.url" offset="999"
+                        [style.object-fit]="'contain'" [alt]="'logo for ' + tool.name" >
+                </div>
+                <div fxFlex="20%">
+                    <span class="mat-caption" align="center">{{ tool.name }}</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Action - Get Resume -->
+        <div fxFlex align="center"
+            angulartics2On="click" 
+            angularticsCategory="DownloadClick"
+            angularticsAction="Download Resume" 
+            angularticsLabel="User clicked to download/view resume" 
+            angularticsValue="99" 
+            [angularticsProperties]="{'custom-property': 'Fall Campaign'}">
+            <a href="https://drive.google.com/file/d/1xEvp8K7oEPbUPTcelx9HrvwsTVKo-1Bs/view" target="_blank" mat-flat-button color="primary"
+                
+             >
+                GET SHAUNG'S RESUME
+            </a>
+        </div>
+    </div>
+    <span fxFlex="10%"></span>
+</div>

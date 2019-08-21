@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Angular Material
+@import '~@angular/material/theming';
+@include mat-core(); // Be sure that you only ever include this mixin once!
+
+// Customized global styles
+@import "./global-styles/mixins.scss";
+@import "./global-styles/typography.scss";
+@import "./global-styles/input-components.scss";
+@import "./global-styles/colors.scss";
+@import "./global-styles/responsive.scss";
+@import "./global-styles/effects.scss";
+@import "./global-styles/structures.scss";
+
+// avoid unwanted spaces between body and Angular's app-root.
+body {
+    margin: 0;
+}
