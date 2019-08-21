@@ -20,11 +20,11 @@ The frontend of my personal website.
 
 PROS
 
-- Reduced backend docker image size
-- Improved backend build time, especially when only change in backend, but the CI/CD still has to rebuild frontend
-- Saved us resources and $$ to offload works on K8 cluster, which is pricy. Static website hosting nowadays is deeply cheap.
-- Serves frontend Angular app faster on CDN/S3..., comparing to using our own K8 cluster
-- Hassleless on dealing with frontend routing & backend routing interference. Will need complicated ingress rules to direct traffic to either backend or frontend correctly.
+- Improved backend build time, way faster build time (production angular build takes a lot of time), especially when only change in backend, but the CI/CD still has to rebuild frontend.
+- Reduced backend docker image size.
+- Saved us resources and $$ to offload works on K8 cluster, which is pricy. And after all, static website hosting nowadays is deeply cheap, e.g. free github page hosting, free S3 bucket, ...
+- Serves frontend Angular app faster on CDN/S3..., comparing to using our own K8 cluster.
+- Hassleless when dealing with frontend routing & backend routing interference. Otherwise will need complicated ingress rules in K8 to direct traffic to either backend or frontend correctly.
 
 CONS
 
