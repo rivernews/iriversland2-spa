@@ -9,8 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "predeploy": "ng build --prod --base-href /",
-    "deploy": "gh-pages -d dist/ && echo INFO: success, allow a minute and access https://rivernews.github.io/iriversland2-spa/"
+    "predeploy": "ng build --prod --base-href=\"https://rivernews.github.io/iriversland2-spa\" ",
+    "deploy": "gh-pages -d dist/ && echo INFO: success, allow a minute and access https://rivernews.github.io/iriversland2-spa/ or https://shaungc.com"
   },
   "private": true,
   "dependencies": {
