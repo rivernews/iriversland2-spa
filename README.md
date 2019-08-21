@@ -12,6 +12,7 @@ The frontend of my personal website.
 - Refer to [package.json](package.json) for the command, and [angular.json](angular.json) for the output built files.
 - Also refer to [Angular doc: Deployment](https://angular.io/guide/deployment#deploy-to-github-pages) to add the `--base-href` parameter. This is important [for both static files and routing](https://stackoverflow.com/a/49093627/9814131) in angualr.
 - Finally run `npm run deploy`
+- **Warning**: if you plan to use custom domain, settings above probably are not siffucient. [See this issue](https://github.com/rivernews/iriversland2-api/issues/13) dealing with all the problems along, where we at the end succeessfully deployed to our custom domain with all routings and static files working.
 
 ## System Design
 
