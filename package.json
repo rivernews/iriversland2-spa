@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "predeploy": "ng build --prod --base-href /iriversland2-spa/",
+    "predeploy": "ng build --prod --base-href /",
     "deploy": "gh-pages -d dist/ && echo INFO: success, allow a minute and access https://rivernews.github.io/iriversland2-spa/"
   },
   "private": true,
