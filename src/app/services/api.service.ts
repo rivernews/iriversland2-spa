@@ -9,7 +9,7 @@ import { timeout } from 'rxjs/operators';
 })
 export class ApiService {
 
-    static BACKEND_BASE_ENDPOINT_HOSTNAME = "shaungc.com"
+    static BACKEND_BASE_ENDPOINT_HOSTNAME = "api.shaungc.com"
 
     private DEBUG: boolean = false;
 
