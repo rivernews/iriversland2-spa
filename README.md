@@ -1,5 +1,8 @@
 # Iriversland2-spa
-The frontend of my personal website.
+The frontend of my personal website. The whole project is constructed by 3 repositories:
+- **[Iriversland2 SPA](https://github.com/rivernews/iriversland2-spa)**: (this repository) the frontend code base, using Angular.
+- **[Iriversland2 Backend API](https://github.com/rivernews/iriversland2-api)**: the backend RESTful API in Django.
+- **[Iriversland2 Kubernetes](https://github.com/rivernews/iriversland2-kubernetes)**: infrastructure as code provisioning the Kubernetes cluster for the backend server.
 
 ## How to run
 
