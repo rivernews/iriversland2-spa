@@ -1,4 +1,4 @@
-# Iriversland2-spa
+# Iriversland2 Frontend - Single Page Application (SPA)
 The frontend of my personal website. The whole project is constructed by 3 repositories:
 - **[Iriversland2 SPA](https://github.com/rivernews/iriversland2-spa)**: (this repository) the frontend code base, using Angular.
 - **[Iriversland2 Backend API](https://github.com/rivernews/iriversland2-api)**: the backend RESTful API in Django.
