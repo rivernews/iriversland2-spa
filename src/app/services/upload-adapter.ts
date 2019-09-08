@@ -48,6 +48,15 @@ export class UploadAdapter {
     getUploadedFileUrl() {
         this.barService.popUpMessage("Uploading...", 0);
         return new Promise( (resolve, reject) => {
+            /** Check file size limit to 1M */
+            const fileSizeMB = this.loader.file.size/1024/1024;
+            if (fileSizeMB > 1.0) {
+                const errorMessage = `🛑 File size limit is 1MB, but file size too large: ${+fileSizeMB.toFixed(3)}MB.`;
+                console.error(errorMessage);
+                // reject will already trigger `alert`, which is the behavior of the ckeditor uploader; so we will not make another `popUpMessage`
+                reject(errorMessage + `...reject`);
+                return;
+            }
             
             /** Prepare form data for file upload */
             let uploadFileForm = new FormData();

@@ -16,16 +16,16 @@ export class ApiService {
     static TIMEOUT_GET: number = 20000;
 
     // http options used for making API calls
-    private httpOptions: any;
+    // private httpOptions: any;
 
     constructor(
         private http: HttpClient,
     ) {
-        this.httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-            })
-        };
+        // this.httpOptions = {
+        //     headers: new HttpHeaders({
+        //         'Content-Type': 'application/json',
+        //     })
+        // };
     }
 
     public getApiBaseUrl() {
@@ -72,6 +72,7 @@ export class ApiService {
                 'Authorization': (token) ? 'JWT ' + token : '',
             }),
             params: (params) ? params : {},
+            withCredentials: true
         })
         .pipe(
             timeout(ApiService.TIMEOUT_GET),
@@ -86,7 +87,8 @@ export class ApiService {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': (token) ? 'JWT ' + token : '',
-            })
+            }),
+            withCredentials: true
         });
         if (this.DEBUG) console.log('POST:', queryUrl, token, formData, httpOptions);
         return this.http.post(queryUrl,
@@ -102,7 +104,8 @@ export class ApiService {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': (token) ? 'JWT ' + token : '',
-            })
+            }),
+            withCredentials: true
         });
         if (this.DEBUG) console.log('PUT:', queryUrl, token, formData, httpOptions);
         return this.http.put(queryUrl,
@@ -117,7 +120,8 @@ export class ApiService {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': (token) ? 'JWT ' + token : '',
-            })
+            }),
+            withCredentials: true
         };
         if (this.DEBUG) console.log('PATCH:', queryUrl, token, data, httpOptions);
         return this.http.patch(queryUrl,
@@ -132,7 +136,8 @@ export class ApiService {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': (token) ? 'JWT ' + token : '',
-            })
+            }),
+            withCredentials: true
         };
         if (this.DEBUG) console.log('DELETE:', queryUrl, token, httpOptions);
         return this.http.delete(queryUrl,
@@ -145,7 +150,8 @@ export class ApiService {
         let httpOptions = {
             headers: new HttpHeaders({
                 'Authorization': (token) ? 'JWT ' + token : '',
-            })
+            }),
+            withCredentials: true
         };
         if (this.DEBUG) console.log('POST FILE:', queryUrl, token, httpOptions);        
         return this.http.post(queryUrl,
