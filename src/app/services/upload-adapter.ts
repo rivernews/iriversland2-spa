@@ -54,7 +54,7 @@ export class UploadAdapter {
                 const errorMessage = `🛑 File size limit is 1MB, but file size too large: ${+fileSizeMB.toFixed(3)}MB.`;
                 console.error(errorMessage);
                 // reject will already trigger `alert`, which is the behavior of the ckeditor uploader; so we will not make another `popUpMessage`
-                reject(errorMessage + `...reject`);
+                reject(errorMessage);
                 return;
             }
             
