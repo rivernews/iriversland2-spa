@@ -203,4 +203,14 @@
             [data]="documentCustomCkeditorPlaceholderText"
             [config]="documentCkeditorConfig" ></ckeditor>
     </div>
+
+    <!-- Storytelling highlights -->
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.width]="'100vw'" [style.minHeight]="'50vh'"
+        [style.background]="'dimgray'">
+        <span class="mat-display-2">Storytelling Highlights</span>
+        <span class="mat-subheading-1">Showcase a highlight in a storytelling way</span>
+    </div>
+    <div class="page-section" fxLayout="column" fxLayoutAlign="center center" [style.background-color]="'whitesmoke'" >
+        <app-storytelling-highlight></app-storytelling-highlight>
+    </div>
 </div>

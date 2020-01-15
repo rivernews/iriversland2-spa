@@ -1,0 +1,19 @@
+.scroll-container {
+    height: 500vh;
+
+    .sticky-lockup {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        .block {
+            // transform: matrix(1, 0, 0, 1, 0, 35.8952); // controlled by scroll
+            opacity: 0.567686; // controlled by scroll
+            position: absolute;
+            width: 100%;
+            
+            .content {
+
+            }
+        }
+    }
+}
