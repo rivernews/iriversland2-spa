@@ -30,7 +30,7 @@ export class ApiService {
 
     public getApiBaseUrl() {
         if (window.location.hostname === 'localhost') {
-            return `//localhost:8001/api/`;
+            return `//localhost:8000/api/`;
         } else {
             // production
             return `https://${ApiService.BACKEND_BASE_ENDPOINT_HOSTNAME}/api/`;
