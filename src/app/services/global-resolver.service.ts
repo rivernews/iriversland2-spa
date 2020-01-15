@@ -49,13 +49,13 @@ export class GlobalResolverService implements Resolve<any> {
                         'fields': 'city, region_name, country_name, zip, ip, hostname, type, continent_name, latitude, longitude',
                     };
                     // console.log('reporting to server');
-                    this.http.get<any>(`//api.ipstack.com/check`, { params: { 'serialized-params': JSON.stringify(param) } }).subscribe(
+                    this.http.get<any>(`//api.ipstack.com/check`, { params: param }).subscribe(
                         response => {
                             // console.log('got api key from server!', response);
                             let param = response;
                             param['visitingPath'] = routerState.url;
                             param.query = "report_visit";
-                            this.http.get<any>(`${this.apiService.getBaseUrl()}report`, { params: param }).subscribe(
+                            this.http.get<any>(`${this.apiService.getBaseUrl()}report`, { params: { ...param, 'serialized-params': JSON.stringify(param) } }).subscribe(
                                 response => {
                                     // console.log("successfully reported. server responded with", response);
                                 }
