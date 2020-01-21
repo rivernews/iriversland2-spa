@@ -17,17 +17,9 @@ export class ApiService {
 
     static TIMEOUT_GET: number = 20000;
 
-    // http options used for making API calls
-    // private httpOptions: any;
-
     constructor(
         private http: HttpClient,
     ) {
-        // this.httpOptions = {
-        //     headers: new HttpHeaders({
-        //         'Content-Type': 'application/json',
-        //     })
-        // };
     }
 
     public getApiBaseUrl() {
