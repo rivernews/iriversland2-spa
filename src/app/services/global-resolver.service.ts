@@ -45,11 +45,10 @@ export class GlobalResolverService implements Resolve<any> {
                     // console.log('getting api key successful, server responded with', response);
                     this.credentials = response.data;
                     param = {
-                        'access_key': this.credentials,
-                        'fields': 'city, region_name, country_name, zip, ip, hostname, type, continent_name, latitude, longitude',
+                        'token': this.credentials
                     };
                     // console.log('reporting to server');
-                    this.http.get<any>(`//api.ipstack.com/check`, { params: param }).subscribe(
+                    this.http.get<any>(`//ipinfo.io/json`, { params: param }).subscribe(
                         response => {
                             // console.log('got api key from server!', response);
                             let param = response;

@@ -11,6 +11,8 @@ export class ApiService {
 
     static BACKEND_BASE_ENDPOINT_HOSTNAME = "api.shaungc.com"
 
+    static DEV_BACKEND_BASE_ENDPOINT_HOSTNAME = "localhost:8000"
+
     private DEBUG: boolean = false;
 
     static TIMEOUT_GET: number = 20000;
@@ -30,7 +32,7 @@ export class ApiService {
 
     public getApiBaseUrl() {
         if (window.location.hostname === 'localhost') {
-            return `//localhost:8000/api/`;
+            return `//${ApiService.DEV_BACKEND_BASE_ENDPOINT_HOSTNAME}/api/`;
         } else {
             // production
             return `https://${ApiService.BACKEND_BASE_ENDPOINT_HOSTNAME}/api/`;
@@ -39,7 +41,7 @@ export class ApiService {
 
     public getBaseUrl() {
         if (window.location.hostname === 'localhost') {
-            return `//localhost:8001/`;
+            return `//${ApiService.DEV_BACKEND_BASE_ENDPOINT_HOSTNAME}/`;
         } else {
             // production
             return `https://${ApiService.BACKEND_BASE_ENDPOINT_HOSTNAME}/`;
