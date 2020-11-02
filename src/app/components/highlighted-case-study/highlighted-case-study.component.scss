@@ -46,5 +46,13 @@
 
     .text-container {
         position: relative;
+        // transform: translateX(0vw);
+        // opacity: 0;
+        @include set-transition-promptly(transform, 0.8s);
+        
+        // &.shaded {
+        //     transform: translateX(50vw); 
+        //     opacity: 1;
+        // }
     }
 }

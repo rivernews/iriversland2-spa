@@ -33,3 +33,7 @@ CONS
 
 - Frontend build is not included in the entire CI/CD process now. Maybe it's still possible, but we haven't come up with one yet.
   - Perhaps just setting up CircleCI for frontend makes a lot of sense - when commit git and push, CircleCI builds and deploy website for us, which means that CircleCI has to have permission to push to github. Another topic for issue. But, it can be easily done at local (my laptop) by just one command - `npm run deploy`, so didn't see any urgent need on this. Would still be great to have version control tied with CI/CD process though, also good for later on expansion like adding test stage, etc.
+
+## Misc
+- Q: Why the file `.python-version` and pointing to Python2?
+  - A: Buidling for `node-sass` requires Python2.
