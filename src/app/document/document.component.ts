@@ -215,7 +215,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
                     },
                     error => {
                         if (this.DEBUG) console.warn('warning: in doc cannot get data, maybe becasue of logout (cache is refreshed)? will redirect to list view', error);
-                        this.router.navigate(['../'], { relativeTo: this.route });
+                        this.router.navigate(['../'], { relativeTo: this.route, queryParamsHandling: 'merge' });
                         reject(error);
                     }
                 ));

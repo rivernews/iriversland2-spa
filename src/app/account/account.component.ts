@@ -53,11 +53,11 @@ export class AccountComponent implements OnInit, OnDestroy {
             'password': this.loginForm.password,
         })
         .then(resultMessage => {
-            this.router.navigateByUrl('/home');
+            this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
             if (window.history.length > 1) {
                 this.location.back();
             } else {
-                this.router.navigateByUrl('/home');
+                this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
             }
         })
         .catch(error => {

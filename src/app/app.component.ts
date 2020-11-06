@@ -137,7 +137,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.isLogin) {
                     this.userService.logout();
                 } else {
-                    this.router.navigateByUrl('/login');
+                    this.router.navigate(['/login'], { queryParamsHandling: 'merge' });
                 }
                 event.preventDefault();
                 /** preventDefault() might already do the job, just in case  */

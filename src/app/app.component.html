@@ -13,13 +13,12 @@
             <!-- <a (click)="sidenav.close()" mat-button class="logo-wrapper" routerLink="/home" fxLayout="column" fxLayoutAlign="center stretch">
                 {{title}}
             </a> -->
-            <button (click)="sidenav.close()" class="logo-wrapper image-background-container" routerLink="/home" mat-button fxLayout="column" fxLayoutAlign="center stretch">
+            <button (click)="sidenav.close()" class="logo-wrapper image-background-container" routerLink="/home" mat-button fxLayout="column" fxLayoutAlign="center stretch" queryParamsHandling="merge">
                 <img class="image-background image-contain"
                 lazyLoad="https://s3.us-east-2.amazonaws.com/iriversland2-media/brands/shaungc-logo.png"
                 offset="1" alt="shaung cheng logo">
             </button>
-            <a (click)="sidenav.close()" mat-button *ngFor="let link of navLinks" [routerLink]="link.routerLink" routerLinkActive #rla="routerLinkActive"
-                active="rla.isActive">
+            <a (click)="sidenav.close()" mat-button *ngFor="let link of navLinks" [routerLink]="link.routerLink" routerLinkActive #rla="routerLinkActive" active="rla.isActive" queryParamsHandling="merge">
                 <div fxFlexFill fxLayout="row" fxLayoutAlign="space-around">
                     <span fxFlex="30%" align="right">
                         <mat-icon fxFlex fontSet="material-icons">{{link.icon}}</mat-icon>
@@ -46,14 +45,14 @@
         <header *ngIf="showAppBar(routerOutlet)">
             <mat-toolbar fxHide.lt-md fxFlex fxLayout="row" fxLayoutAlign="space-around center">
                 <mat-toolbar-row>
-                    <button class="logo-wrapper image-background-container" routerLink="/home" mat-button fxLayout="column" fxLayoutAlign="center stretch">
+                    <button class="logo-wrapper image-background-container" routerLink="/home" mat-button fxLayout="column" fxLayoutAlign="center stretch" queryParamsHandling="merge">
                         <img class="image-background image-contain"
                         lazyLoad="https://s3.us-east-2.amazonaws.com/iriversland2-media/brands/shaungc-logo.png"
                         offset="1" alt="shaung cheng logo">
                     </button>
                     <span fxFlex></span>
                     <nav mat-tab-nav-bar>
-                        <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.routerLink" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+                        <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.routerLink" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" queryParamsHandling="merge">
                             <mat-icon fontSet="material-icons">{{link.icon}}</mat-icon>
                             {{link.label|uppercase}}
                         </a>

@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public actionSurfaceOnClick(actionObject, event) {
         setTimeout(() => {
             if (actionObject.routerLink) {
-                this.router.navigateByUrl(actionObject.routerLink);
+                this.router.navigate([actionObject.routerLink], { queryParamsHandling: 'merge' });
             }
         }, 80);
     }
