@@ -37,7 +37,7 @@
                         </div>
                         <div class="highlighted-contens-leader-words" fxLayout="column">
                             <span>
-                                <a mat-flat-button color="primary" routerLink="/portfolio/{{highlightedCaseStudy.case_study_id}}">
+                                <a mat-flat-button color="primary" routerLink="/portfolio/{{highlightedCaseStudy.case_study_id}}" queryParamsHandling="merge">
                                     {{highlightedCaseStudy.leader_action}}
                                 </a>
                             </span>

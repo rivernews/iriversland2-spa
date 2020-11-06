@@ -24,7 +24,10 @@ export class GlobalResolverService implements Resolve<any> {
     }
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<any> {
-        this.reportVisit(routerState);
+        // if there's a `nr` (no-reporting) querystring, then do not report visitor
+        if (!(route.queryParams.nr || route.queryParams.nr === '' || route.queryParams.nr === 0)) {
+            this.reportVisit(routerState);
+        }
         
         /** google analytics */
         let categorySuffix = (this.apiService.isLocalDev()) ? ` (localhost)`: "";

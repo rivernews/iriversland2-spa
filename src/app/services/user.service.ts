@@ -141,7 +141,7 @@ export class UserService {
 
     public kickOut() {
         this.logout();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'], { queryParamsHandling: 'merge' });
         this.barService.popUpMessage("Oops...just want to make sure again you're the right person!");
     }
 
