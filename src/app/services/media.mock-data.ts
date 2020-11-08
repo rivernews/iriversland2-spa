@@ -26,7 +26,7 @@ export let THEMED_ACTIONS = {
     profile: new ThemedAction(
         new s3MediaResource(`editor_uploads/home/profile-pro.jpg`), // home/collaborate.compressed.jpg
         `person_pin`,
-        `Profile`,
+        `About`,
         ``,
         `/about`
     ),
