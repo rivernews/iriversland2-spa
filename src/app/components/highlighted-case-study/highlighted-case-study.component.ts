@@ -148,11 +148,23 @@ export class HighlightedCaseStudyComponent implements OnInit, OnDestroy {
         // which gives a larger bottom space effect under the text when user keeps scrolling
         const bottomSpaceReservedWhenStickyEndFactor = -.9;
         const stickyTranslateYValue = top * -1 - (this.screenHeight / offsetDownwardFactor);
-        if (componentRelativePosition > transitionStartBound) {
-            this.translateYValue = stickyTranslateYValue;
+        if (componentRelativePosition > this.screenHeight) {
+            // 'case 1' above
+            
+            // do not change Y, let it be at its static position
+            // this is important because if we use sticky position here -- there could be multiple highlight components,
+            // and all of them will stick to current viewport at the same time and overlaying each other, 
+            // then you cannot click the 'Go To Case Study' button properly
+            this.translateYValue = 0;
         } else if (componentRelativePosition <= transitionStartBound && componentRelativePosition >= this.screenHeight * bottomSpaceReservedWhenStickyEndFactor) {
+            // 'case 2' above
+
+            // let this very highlight component be sticky to viewport
             this.translateYValue = stickyTranslateYValue;
         } else {
+            // 'case 3' above
+
+            // disable stickiness to "release" this highlight component and let it flow up away as user scrolls
             this.translateYValue = this.translateYValue;
         }
 
