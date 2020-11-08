@@ -15,9 +15,9 @@
         padding-top: 75vh;
     }
     @include bp(gt-xs) {
-        padding-top: 65vh;
+        padding-top: 100vh;
     }
-    padding-bottom: 30vh;
+    padding-bottom: 50vh;
 
     .image-background {
         @include bp(lt-sm) {
@@ -48,7 +48,8 @@
         position: relative;
         // transform: translateX(0vw);
         // opacity: 0;
-        @include set-transition-promptly(transform, 0.8s);
+        
+        // @include set-transition-promptly(transform, 0.8s);
         
         // &.shaded {
         //     transform: translateX(50vw); 
