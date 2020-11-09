@@ -5,7 +5,7 @@
         [class.shaded]="document?.cover_image" >
         <!-- Doc Header -->
         <div class="doc-header-container" fxFlexFill fxLayout="row" fxLayoutAlign="space-between end" 
-            [lazyLoad]="document.cover_image || ''"
+            [lazyLoad]="document?.cover_image || ''"
             [class.image-background]="document?.cover_image"
             [class.shadowed-text-container]="document?.cover_image"
             [style.background-size]="'cover'"
@@ -42,7 +42,7 @@
                     fxFlexFill [textContent]="document?.title" 
                     (input)="document['edited__title'] = $event.target.textContent; isDirty = true;"
                     [contentEditable]="isLogin"></div>
-
+                
                 <!-- Tag Chips -->
                 <ng-container *ngIf="showChips && document && documentAttributeNameForTagChips && document[documentAttributeNameForTagChips]">
                     <mat-form-field fxFlex.gt-sm [class.shaded-input-field]="isLogin" [class.input-field-no-underline]="true" fxFlexFill>
@@ -53,10 +53,27 @@
                             </mat-chip>
                         </mat-chip-list>
                         <!-- when admin (logged in), show raw input -->
-                        <input *ngIf="isLogin" matInput 
-                            [value]="document[documentAttributeNameForTagChips]" (input)="document['edited__' + documentAttributeNameForTagChips] = $event.target.value ;isDirty = true;" >
+                        <div *ngIf="isLogin">
+                            <div class="mat-body-2">
+                                <mat-icon fontSet="material-icons">local_offer</mat-icon>
+                                Tag
+                            </div>
+                            <input *ngIf="isLogin" matInput 
+                                [value]="document[documentAttributeNameForTagChips]" (input)="document['edited__' + documentAttributeNameForTagChips] = $event.target.value ;isDirty = true;" >
+                        </div>
                     </mat-form-field>
                 </ng-container>
+
+                <!-- Cover Image URL -->
+                <!-- when admin (logged in), show raw input to edit cover image -->
+                <div *ngIf="isLogin" class="cover-image-field">
+                    <mat-icon fontSet="material-icons">insert_photo</mat-icon>
+                    <span class="mat-body-1"> Cover Image URL</span>
+                    <div class="shaded-input-field mat-body-2"
+                        fxFlexFill [textContent]="document?.cover_image" 
+                        (input)="document['edited__cover_image'] = $event.target.textContent; isDirty = true;"
+                        [contentEditable]="isLogin"></div>
+                </div>
             </div>
             <span fxFlex="10%"></span>
         </div>
@@ -68,13 +85,13 @@
     </div>
 
     <div class="doc-body-container" fxFlex>
-        <div class="progress-bar-container" fxFlexFill fxLayout="column" fxLayoutAlign="center center" align="center" *ngIf="!document.content">
+        <div class="progress-bar-container" fxFlexFill fxLayout="column" fxLayoutAlign="center center" align="center" *ngIf="!document?.content">
             <mat-progress-spinner [diameter]="80" [strokeWidth]="4" [mode]="'indeterminate'"></mat-progress-spinner>
         </div>
         <!-- Doc Content (Rich Text Editor) Body -->
         <div class="doc-editor-container">
             <ckeditor [class.shaded-input-field]="isLogin" [config]="documentCKeditorConfig" [editor]="editorFactory"
-                (ready)="onEditorReady($event)" [(ngModel)]="document['content']"
+                (ready)="onEditorReady($event)" [(ngModel)]="document.content"
                 (change)="onDocumentEditorContentChange($event)" ></ckeditor>
         </div>
 
