@@ -107,52 +107,84 @@ export let MAJOR_ROLE_EDUCATIONS = [
 ];
 
 export let MAJOR_ROLE_TOOL_LIST = [
-
-    // design
+    // backend
     new s3MediaResource(
-        `brands/sketch.png`,
-        `Sketch`
+        `brands/python-logo.png`,
+        `Python`
     ),
     new s3MediaResource(
-        `brands/invision.svg`,
-        `InVision`
+        `brands/nodejs-logo.png`,
+        `NodeJS`
+    ),
+    // new s3MediaResource(
+    //     `brands/drf.png`,
+    //     `Django REST framework`
+    // ),
+    new s3MediaResource(
+        `brands/django-light.svg`,
+        `Django`
     ),
     new s3MediaResource(
-        `brands/illustrator.svg`,
-        `Illustrator`
-    ),
-    new s3MediaResource(
-        `brands/ps.svg`,
-        `Photoshop`
+        `brands/golang-logo.png`,
+        `Golang`
     ),
 
     // frontend
     new s3MediaResource(
-        `brands/angular.svg`,
-        `Angular`
+        `brands/typescript-logo.png`,
+        `TypeScript`
     ),
     new s3MediaResource(
         `brands/react-dark-rounded-rev-01.png`,
         `React`
     ),
     new s3MediaResource(
-        `brands/vue.png`,
-        `Vue`
+        `brands/redux-logo.png`,
+        `Redux`
     ),
     new s3MediaResource(
-        `brands/rxjs.png`,
-        `RxJS`
+        `brands/angular.svg`,
+        `Angular`
     ),
+    // new s3MediaResource(
+    //     `brands/vue.png`,
+    //     `Vue`
+    // ),
+    // new s3MediaResource(
+    //     `brands/rxjs.png`,
+    //     `RxJS`
+    // ),
+    // new s3MediaResource(
+    //     `brands/d3.png`,
+    //     `D3`
+    // ),
 
-    // others and fundamentals
+
+    // devOps & db
+    // TODO: postgres, dynamodb
     new s3MediaResource(
-        `brands/d3.png`,
-        `D3`
+        `brands/redis-logo.png`,
+        `Redis`
+    ),
+    // TODO: serverless
+    new s3MediaResource(
+        `brands/k8-logo.png`,
+        `Kubernetes`
     ),
     new s3MediaResource(
-        `brands/js.png`,
-        `JavaScript ES6`
+        `brands/tf-logo.png`,
+        `Terraform`
     ),
+    // new s3MediaResource(
+    //     `brands/docker-logo.svg`,
+    //     `Docker`
+    // ),
+    new s3MediaResource(
+        `brands/aws-full-stripped.svg`,
+        `AWS`
+    ),
+    
+    // design
     new s3MediaResource(
         `brands/sass.png`,
         `SASS/SCSS`
@@ -161,23 +193,32 @@ export let MAJOR_ROLE_TOOL_LIST = [
         `brands/css3.png`,
         `CSS3`
     ),
+    new s3MediaResource(
+        `brands/sketch.png`,
+        `Sketch`
+    ),
+    new s3MediaResource(
+        `brands/invision.svg`,
+        `InVision`
+    ),
+    // new s3MediaResource(
+    //     `brands/illustrator.svg`,
+    //     `Illustrator`
+    // ),
+    // new s3MediaResource(
+    //     `brands/ps.svg`,
+    //     `Photoshop`
+    // ),
+
+    // others and fundamentals
+    // new s3MediaResource(
+    //     `brands/js.png`,
+    //     `JavaScript ES6`
+    // ),
+    
     // new s3MediaResource(
     //     `brands/html5.png`,
     //     `HTML5`
     // ),
-
-    // backend and devOps
-    new s3MediaResource(
-        `brands/django-light.svg`,
-        `Django`
-    ),
-    new s3MediaResource(
-        `brands/drf.png`,
-        `Django REST framework`
-    ),
-    new s3MediaResource(
-        `brands/aws-full-stripped.svg`,
-        `AWS`
-    ),
 ];
 
