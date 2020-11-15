@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router, RoutesRecognized } from "@angular/router";
 import { Observable, timer } from "rxjs";
 
 import { HttpClient } from '@angular/common/http';
@@ -8,19 +8,31 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService } from "./api.service";
 
 import { Angulartics2 } from 'angulartics2';
+import { filter, pairwise } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GlobalResolverService implements Resolve<any> {
-    private websiteBaseUrl: string;
     private credentials: any;
+
+    public prevUrl;
 
     constructor(
         private http: HttpClient,
         private apiService: ApiService,
         private angulartics2: Angulartics2,
-    ) { 
+        private router: Router
+    ) {
+        // get & store previous route url
+        // https://stackoverflow.com/a/47880387/9814131
+        this.router.events.pipe(
+            filter(e => e instanceof RoutesRecognized),
+            pairwise()
+        )
+        .subscribe((events: [RoutesRecognized, RoutesRecognized]) => {
+            this.prevUrl = events[0].urlAfterRedirects;
+        })
     }
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<any> {

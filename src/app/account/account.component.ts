@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 
 import { UserService } from "../services/user.service";
-import { SnackBarServiceService } from "../services/snack-bar-service.service";
 
-import { Subscription, pipe } from "rxjs";
+import { Subscription } from "rxjs";
 
 import { Router } from '@angular/router';
 
 import { Location } from "@angular/common";
+import { GlobalResolverService } from '../services/global-resolver.service';
 
 @Component({
     selector: 'app-account',
@@ -28,7 +28,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private router: Router,
         private location: Location,
-        private barService: SnackBarServiceService,
+        private globalResolver: GlobalResolverService,
     ) {
         this.loginForm = {
             'username': '',
@@ -52,9 +52,9 @@ export class AccountComponent implements OnInit, OnDestroy {
             'username': this.loginForm.username,
             'password': this.loginForm.password,
         })
-        .then(resultMessage => {
+        .then(() => {
             this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
-            if (window.history.length > 1) {
+            if (this.globalResolver.prevUrl) {
                 this.location.back();
             } else {
                 this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
@@ -63,6 +63,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         .catch(error => {
             this.loginForm.password = '';
             this.loginIsLoading = false;
+            console.error(error);
         });
     }
 }
