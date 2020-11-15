@@ -37,6 +37,12 @@ Head Actions
     // middle text be pulled out; initially override by blur filter layer (.middle-blur-container)
     // need to be at least same as .image-background-container, which set to z-index: 1
     z-index: 1;
+
+    margin: 0 10vw;
+
+    span.welcome-text {
+        margin-top: .5rem;
+    }
 }
 
 
