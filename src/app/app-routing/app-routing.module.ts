@@ -14,6 +14,7 @@ import { MajorRolesComponent } from "../major-roles/major-roles.component";
 
 import { GlobalResolverService } from "../services/global-resolver.service";
 import { DocumentIsDirtyCanDeactivateGuard } from './document-is-dirty-deactivate-guard';
+import { ContactMeComponent } from '../contact-me/contact-me.component';
 
 // Step 2. add routing url like { path: '', component: undefined },
 const routes: Routes = [
@@ -42,6 +43,8 @@ const routes: Routes = [
     { path: 'design-lang-system', component: DesignLangSystemComponent, resolve: { globalResolver: GlobalResolverService }, data: { name: 'design-lang-system' } },
 
     { path: 'login', component: AccountComponent, resolve: { globalResolver: GlobalResolverService }, data: { name: 'login' } },
+
+    { path: 'contact', component: ContactMeComponent, resolve: { globalResolver: GlobalResolverService }, data: { name: 'contact' } },
     // { path: '**', component: NotFound },
 ];
 

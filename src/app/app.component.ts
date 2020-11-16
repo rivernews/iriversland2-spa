@@ -151,7 +151,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         else if (!routerOutlet.activatedRouteData.name) return false;
 
         if (routerOutlet.activatedRouteData.name === 'home' ) {
-            return false;
+            // show app bar at home page too
+            return true;
         }
         else if (routerOutlet.activatedRouteData.name === 'root') {
             return false;

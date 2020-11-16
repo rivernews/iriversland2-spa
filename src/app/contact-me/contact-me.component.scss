@@ -1,0 +1,19 @@
+@import "../../global-styles/mixins.scss";
+@import "../../global-styles/responsive.scss";
+
+
+.contact-me-page {
+    min-height: 100vh;
+}
+
+@include bp(gt-sm) {
+    .contact-me-page {
+        padding-top: 20vh;
+    }
+}
+
+@include bp(lt-md) {
+    .contact-me-page {
+        padding-top: 10vh;
+    }
+}

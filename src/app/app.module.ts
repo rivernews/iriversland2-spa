@@ -39,6 +39,7 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { RichTextEditorComponent } from './components/rich-text-editor/rich-text-editor.component';
 import { HighlightedCaseStudyComponent } from './components/highlighted-case-study/highlighted-case-study.component';
 import { Angulartics2Module } from "angulartics2";
+import { ContactMeComponent } from './contact-me/contact-me.component';
 
 @NgModule({
 declarations: [
@@ -58,7 +59,8 @@ declarations: [
     LabeledSwitchComponent,
     ContactFormComponent,
     RichTextEditorComponent,
-    HighlightedCaseStudyComponent
+    HighlightedCaseStudyComponent,
+    ContactMeComponent
   ],
   imports: [
     BrowserModule,
