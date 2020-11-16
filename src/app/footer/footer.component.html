@@ -1,9 +1,38 @@
 <div class="footer-wrapper">
-    <div [style.min-height]="'300px'" fxLayout="column" fxLayoutAlign="center stretch">
-
-        <!-- personal trade mark -->
-        <div fxLayout="column" fxLayoutAlign="center center" >
-            <div class="social-media-links-container" fxLayout="row" fxLayoutAlign="space-between">
+    <div fxLayout.gt-xs="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between">
+        <div class="link-group" fxLayout="column" fxLayoutAlign="start start">
+            <span class="mat-overline" mat-button>PROFESSIONAL</span>
+            <a routerLink="/home" mat-button queryParamsHandling="merge">
+                <mat-icon fontIcon="fa-home"></mat-icon> Home
+            </a>
+            <a href="https://drive.google.com/file/d/1xEvp8K7oEPbUPTcelx9HrvwsTVKo-1Bs/view" mat-button target="_blank">
+                <mat-icon fontIcon="fa-envelope"></mat-icon> Resume
+            </a>
+            <a routerLink="/portfolio" mat-button queryParamsHandling="merge">
+                <mat-icon fontIcon="fa-suitcase"></mat-icon> Projects
+            </a>
+            <a routerLink="/about" mat-button queryParamsHandling="merge">
+                <mat-icon fontIcon="fa-user-circle"></mat-icon> About
+            </a>
+        </div>
+        <div class="link-group" fxLayout="column" fxLayoutAlign="start start">
+            <span class="mat-overline">PERSONAL</span>
+            <a routerLink="/blog" mat-button queryParamsHandling="merge">
+                <mat-icon fontIcon="fa-align-left"></mat-icon> Blog
+            </a>
+            <a routerLink="/design-lang-system" mat-button queryParamsHandling="merge">
+                <mat-icon fontIcon="fa-flask"></mat-icon> Experiments
+            </a>
+            <a routerLink="/login" mat-button queryParamsHandling="merge">
+                <mat-icon fontIcon="fa-wrench"></mat-icon> Admin
+            </a>
+        </div>
+        <div class="link-group" fxLayout="column" fxLayoutAlign="start start">
+            <span class="mat-overline">LET'S CONNECT</span>
+            <a routerLink="/contact" mat-button queryParamsHandling="merge">
+                <mat-icon fontIcon="fa-envelope"></mat-icon> Contact
+            </a>
+            <div fxLayout="row" class="social-media-links-container">
                 <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/shaung-cheng/" mat-mini-fab aria-label="linkedin">
                     <mat-icon fontSet="fab" fontIcon="fa-linkedin-in"></mat-icon>
                 </a>
@@ -13,74 +42,26 @@
                 <a target="_blank" rel="noopener" href="https://medium.com/@shaungc" mat-mini-fab aria-label="medium">
                     <mat-icon fontSet="fab" fontIcon="fa-medium"></mat-icon>
                 </a>
-                <a routerLink="/contact" mat-button queryParamsHandling="merge">
-                    <mat-icon fontIcon="fa-envelope"></mat-icon> Contact Me
-                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-text-container" fxLayout="column" fxLayoutAlign="center stretch">
+        <div fxLayout="column" fxLayoutAlign="center center" >
+            <div fxLayout="row">
+                <span class="mat-body-2" align="center" >This website is built from scratch by my love for user-experience design, and my developer's passion on making things happen.</span>
+            </div>
+            <div fxLayout="row">
+                <span class="mat-body-2" align="center" >Check out the code repository at 
+                    <a target="_blank" mat-button rel="noopener" href="https://github.com/rivernews/iriversland2-spa/" aria-label="github">
+                        <mat-icon [style.transform]="'scale(1.5)'" fontSet="fab" fontIcon="fa-github"></mat-icon>
+                        Github
+                    </a>
+                </span>
             </div>
             <div fxLayout="row">
                 <span class="mat-body-2" align="center" >Shaung Cheng 2020 © All Right Reserved.</span>
             </div>
-        </div>
-
-        <!-- efforts claim -->
-        <div fxLayout="column" fxLayoutAlign="center center">
-
-            <!-- <span class="mat-caption" align="center">This website is built from scratch by my burning passion
-                <mat-icon fontIcon="fa-fire"></mat-icon>on UX design, and my developer's love
-                <mat-icon fontIcon="fa-heart"></mat-icon>on making things happen.
-            </span>
-            <span class="mat-caption" align="center">All the website details are planned, crafted and brought to you by these cutting-edge frontend technologies:</span>
-            <div fxLayout="row wrap" fxLayoutAlign="center start">
-                <a href="https://angular.io/" target="_blank" rel="noopener" mat-button>
-                    <mat-icon fontSet="fab" fontIcon="fa-angular"></mat-icon> Angular 7
-                </a>
-                <a href="https://material.angular.io/" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontSet="fa" fontIcon="fa-paper-plane"></mat-icon> Angular Material 2
-                </a>
-                <a href="https://fontawesome.com/icons" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontSet="fab" fontIcon="fa-font-awesome-flag"></mat-icon>Font Awesome 5
-                </a>
-                <a href="https://material.io/tools/icons/?style=baseline" target="_blank" rel="noopener" mat-button>
-                    <mat-icon fontIcon="fa-thumbs-up"></mat-icon> Material Icons
-                </a>
-                <a href="https://material.angular.io/guide/typography" target="_blank" rel="noopener" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontIcon="fa-font"></mat-icon> Material Typography
-                </a>
-                <a href="https://github.com/angular/flex-layout" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontIcon="fa-th-large"></mat-icon> Flex Layout
-                </a>
-                <a href="https://material.io/" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontSet="fab" fontIcon="fa-google"></mat-icon> Material Design
-                </a>
-                <a href="https://ckeditor.com/latest/samples/toolbarconfigurator/index.html#advanced" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontIcon="fa-edit"></mat-icon> CKEditor
-                </a>
-                <a href="https://www.sketchapp.com/" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontIcon="fa-gem"></mat-icon> Sketch
-                </a>
-            </div>
-
-            <span class="mat-caption" align="center">As well as industry-tested backend languages and platforms as below</span>
-            <div fxLayout="row wrap" fxLayoutAlign="center">
-                <a href="//s3.console.aws.amazon.com/s3/home?region=us-east-2" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontSet="fab" fontIcon="fa-amazon"></mat-icon> AWS S3
-                </a>
-                <a href="https://console.aws.amazon.com/elasticbeanstalk/home" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontSet="fab" fontIcon="fa-aws"></mat-icon> Elastic Beanstalk
-                </a>
-                <a href="https://www.djangoproject.com/" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontSet="fab" fontIcon="fa-python"></mat-icon> Django
-                </a>
-                <a href="https://www.django-rest-framework.org/" mat-button target="_blank" rel="noopener">
-                    <mat-icon fontIcon="fa-database"></mat-icon> Django RESTful Framework
-                </a>
-            </div> -->
-
-            <span class="mat-body-2">
-                <a routerLink="/login" mat-button queryParamsHandling="merge">
-                    <mat-icon fontIcon="fa-wrench"></mat-icon> Admin portal
-                </a>
-            </span>
         </div>
     </div>
 </div>
