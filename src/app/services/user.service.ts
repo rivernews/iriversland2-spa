@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Location } from "@angular/common";
-
-import { Observable, of, BehaviorSubject, Subscription } from 'rxjs';
-import { timeout } from "rxjs/operators";
+import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
+import { catchError, map, timeout } from "rxjs/operators";
 
 import { ApiService } from "./api.service";
 import { SnackBarServiceService } from "./snack-bar-service.service";
@@ -23,6 +20,8 @@ export class UserService {
     // the user object of the logged in user containing username, id and email
     public user: any;
 
+    public PERSISTENT_TOKEN_KEY = 'userService__login_user_token';
+
     // the actual JWT token
     public token: string;
 
@@ -34,15 +33,32 @@ export class UserService {
     private DEBUG: boolean = false;
 
     constructor(
-        private http: HttpClient,
         private apiService: ApiService,
         private router: Router,
         private barService: SnackBarServiceService,
         private logService: LogMessageService,
     ) {
+        // try to resume login state from localStage
+        this.token = localStorage.getItem(this.PERSISTENT_TOKEN_KEY);
+        if (this.token) {
+            this.updateData(this.token);
+            // check token in localStorage is valid
+            this.isLoginAndCheckExpiry().subscribe(
+                isLoginSuccess => {
+                    if (isLoginSuccess) {
+                        this.barService.popUpMessage('✅ Reused previous login session successfully', 3000)
+                    } else {
+                        localStorage.removeItem(this.PERSISTENT_TOKEN_KEY);
+                    }
+                },
+                () => {
+                    localStorage.removeItem(this.PERSISTENT_TOKEN_KEY);
+                }
+            );
+        }
     }
 
-    public isLoginAndCheckExpiry(): boolean {
+    public isLoginAndCheckExpiry(): Observable<boolean> {
         if (this.token) {
             let expirationDateTime = this.token_expires;
             let currentDateTime = new Date();
@@ -51,34 +67,42 @@ export class UserService {
             // login is still fresh
             if (alertExpirationDateTime > currentDateTime) {
                 this.isLoginStatusAndChange.next(true);
-                return true;
+                return of(true);
             }
 
             // is not fresh, but not yet expired
             else if (alertExpirationDateTime < currentDateTime && currentDateTime < expirationDateTime) {
                 alert(`Login state is going to expire soon in ${this.getDisplayDeltaTimeInMinSec(currentDateTime, expirationDateTime)}. Will now try to refresh login state for you.`);
-                this.refreshToken().then(resultMessage => {
-                    alert(`✅ Login state refreshed successfully! Your login is valid for the next ${this.getDisplayDeltaTimeInMinSec(new Date(), this.token_expires)}.`);
-                    this.isLoginStatusAndChange.next(true);
-                })
-                    .catch(errorMessage => {
-                        // refresh not successful, warn the user but nothing further
-                        alert('⚠️ Refresh login state failed, save all your changes and check your network. Will retry upon your next server request.');
-                    });
-                return true;
+                return this.refreshToken().pipe(
+                    map(isRefreshSuccess => {
+                        if (isRefreshSuccess) {
+                            alert(`✅ Login state refreshed successfully! Your login is valid for the next ${this.getDisplayDeltaTimeInMinSec(new Date(), this.token_expires)}.`);
+                            this.isLoginStatusAndChange.next(true);
+                        } else {
+                            // refresh not successful, warn the user but nothing further
+                            alert('⚠️ Refresh login state failed, save all your changes and check your network. Will retry upon your next server request.');
+                        }
+
+                        // token still valid even if refresh not successful
+                        // so we want to return `true` even if `isRefreshSuccess` is false
+                        return true;
+                    })
+
+                    // `refreshToken()` will silent all error so no need to catch error here
+                )
             }
 
             // expired
             else {
-                // TODO: notify the user and let user choose to go to login page or not, don't force it.
-                alert('Login status expired, save all your changes and login again.');
-                // this.kickOut();
-                // this.logout();
-                return false;
+                // notify the user and let user choose to go to login page or not, don't force it.
+                if (confirm('Login status expired. Do you want to go to login page? Changes will be lost, please make a copy of all your changes first.')) {
+                    this.router.navigate(['/login'], { queryParamsHandling: 'merge' });
+                }
+                return of(false);
             }
         } else {
             this.kickOut();
-            return false;
+            return of(false);
         }
     }
 
@@ -107,42 +131,43 @@ export class UserService {
 
     // Refreshes the JWT token, to extend the time the user is logged in
     public refreshToken() {
-        return new Promise((resolve, reject) => {
-            this.subscriptions.add(this.apiService.apiPostEndPoint('token-refresh', { token: this.token })
-                .pipe(
-                    timeout(UserService.TIMEOUT_login)
-                )
-                .subscribe(
-                    data => {
-                        if (data['token']) {
-                            this.updateData(data['token']);
-                            this.logService.print(this, `got new token and refreshed it`);
+        return this.apiService.apiPostEndPoint('token-refresh', { token: this.token })
+            .pipe(
+                timeout(UserService.TIMEOUT_login),
+                map((data => {
+                    if (data['token']) {
+                        this.updateData(data['token']);
+                        this.logService.print(this, `got new token and refreshed it`);
 
-                            resolve('refreshed');
-                        } else {
-                            reject('error: returned empty token when requesting refresh');
-                        }
-                    },
-                    err => {
-                        if (this.DEBUG) console.log('Error: cannot refresh: ', err);
-                        reject('error refreshing');
+                        // refreshed ok
+                        return true;
+                    } else {
+                        throw new Error('error: returned empty token when requesting refresh');
                     }
-                ))
-        });
+                })),
+                catchError(err => {
+                    if (this.DEBUG) console.error('Error: cannot refresh login token: ', err);
+                    
+                    // silent error and just return bool instead for subscribing
+                    // return throwError(err);
+                    return of(false);
+                })
+            )
     }
 
     public logout() {
         this.token = null;
         this.token_expires = null;
         this.user = null;
+        localStorage.removeItem(this.PERSISTENT_TOKEN_KEY);
         this.isLoginStatusAndChange.next(false);
         this.barService.popUpMessage("Logout", 2000);
     }
 
     public kickOut() {
         this.logout();
-        this.router.navigate(['/login'], { queryParamsHandling: 'merge' });
         this.barService.popUpMessage("Oops...just want to make sure again you're the right person!");
+        this.router.navigate(['/login'], { queryParamsHandling: 'merge' });
     }
 
     public getUserList() {
@@ -151,6 +176,7 @@ export class UserService {
 
     private updateData(token) {
         this.token = token;
+        localStorage.setItem(this.PERSISTENT_TOKEN_KEY, token);
 
         // decode the token to read the username and expiration timestamp
         const token_parts = this.token.split(/\./);
