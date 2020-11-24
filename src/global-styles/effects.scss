@@ -208,7 +208,9 @@ $vertical-corners: top, bottom;
         .#{$horizontal-corner}-#{$vertical-corner}-control {
             @include page-button-control-base(fixed);
             #{$horizontal-corner}: 20px;
-            #{$vertical-corner}: 20px;
+
+            // avoid overlapping with app top bar
+            #{$vertical-corner}: 4rem;
         }
     }
 }
