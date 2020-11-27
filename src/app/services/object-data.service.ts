@@ -1,10 +1,10 @@
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { ApiService } from "./api.service";
 import { UserService } from './user.service';
 
-import { Observable, BehaviorSubject } from "rxjs";
-import { tap, map, distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject } from "rxjs";
+import { tap, map, distinctUntilChanged, mergeMap } from 'rxjs/operators';
 import { SnackBarServiceService } from './snack-bar-service.service';
 import { LogMessageService } from './log-message.service';
 
@@ -72,6 +72,19 @@ export class ObjectDataService {
             this.cachedObjectData[ObjectApiEndPoint].getValue().length > 0;
     }
 
+    private _authCheck() {
+        // refresh token if necessary
+        return this.userService.isLoginAndCheckExpiry().pipe(
+            // `tap` will return original Observable behind the scene, comparing to `map` you can alter the value in the returned Observable
+            tap(isLogin => {
+                if (!isLogin) {
+                    // alert given by userService, so no additional action needed
+                    throw new Error('Not able to login nor refresh, cannot make update() API call');
+                }
+            }),
+        ) 
+    }
+
 
     /** 
        * 
@@ -79,10 +92,13 @@ export class ObjectDataService {
        * 
        */
 
-    public read(ObjectApiEndPoint, id?): Observable<any> {
+    public read(ObjectApiEndPoint, id?) {
+        // note that no need to check whether login or not, because we still want to show public content,
+        // where backend will filter for us and only return public entry based on our login status
+
         this.logService.print(this, `read(${ObjectApiEndPoint}, ${id})`);
 
-        let queryUrl = (id) ? `${ObjectApiEndPoint}/${id}` : ObjectApiEndPoint;
+        const queryUrl = (id) ? `${ObjectApiEndPoint}/${id}` : ObjectApiEndPoint;
         if (!id) {
             if (!this.cachedObjectData) {
                 alert("Exception. See log.");
@@ -139,89 +155,90 @@ export class ObjectDataService {
     }
 
     public update(ObjectApiEndPoint, ObjectData) {
-        // refresh token if necessary
-        this.userService.isLoginAndCheckExpiry();
+        return this._authCheck().pipe(
+            // since `apiPatchEndPoint()` is already an Observable, we use mergeMap to avoid nesting Observable when return
+            mergeMap(() => {
+                this.applyEditedValuesInPlace(ObjectData);
+                let queryUrl = `${ObjectApiEndPoint}/${ObjectData.id}`;
+                return this.apiService.apiPatchEndPoint(queryUrl, ObjectData, this.userService.token)
+                    .pipe(
+                        tap(
+                            success => {
+                                // update the cache if api success
+                                if (this.isCacheSetupReady(ObjectApiEndPoint)) {
+                                    let objectDataList = this.cachedObjectData[ObjectApiEndPoint].getValue();
 
-        this.applyEditedValuesInPlace(ObjectData);
+                                    /** update cache for the modified object, so changes can be reflected in all pages */
+                                    for (let i = 0; i < objectDataList.length; i++) {
+                                        if (objectDataList[i].id === ObjectData.id) {
+                                            // update object with that id in object list
+                                            objectDataList[i] = ObjectData;
+                                            break;
+                                        }
+                                    }
 
-        let queryUrl = `${ObjectApiEndPoint}/${ObjectData.id}`;
-        return this.apiService.apiPatchEndPoint(queryUrl, ObjectData, this.userService.token)
-            .pipe(
-                tap(
-                    success => {
-                        // update the cache if api success
-                        if (this.isCacheSetupReady(ObjectApiEndPoint)) {
-                            let objectDataList = this.cachedObjectData[ObjectApiEndPoint].getValue();
+                                    // update might change ordering, so sort again
+                                    this.logService.print(this, `update() before sort:`) ;
+                                    this.logService.print(this, objectDataList);
+                                    this.sortObjectByNumericCriterias(objectDataList, ['order', 'id'], 'decr');
+                                    this.logService.print(this, `update() after sort:`) ;
+                                    this.logService.print(this, objectDataList);
 
-                            /** update cache for the modified object, so changes can be reflected in all pages */
-                            for (let i = 0; i < objectDataList.length; i++) {
-                                if (objectDataList[i].id === ObjectData.id) {
-                                    // update object with that id in object list
-                                    objectDataList[i] = ObjectData;
-                                    break;
+                                    this.cachedObjectData[ObjectApiEndPoint].next(objectDataList);
                                 }
                             }
-
-                            // update might change ordering, so sort again
-                            this.logService.print(this, `update() before sort:`) ;
-                            this.logService.print(this, objectDataList);
-                            this.sortObjectByNumericCriterias(objectDataList, ['order', 'id'], 'decr');
-                            this.logService.print(this, `update() after sort:`) ;
-                            this.logService.print(this, objectDataList);
-
-                            this.cachedObjectData[ObjectApiEndPoint].next(objectDataList);
-                        }
-                    }
-                ),
-            );
+                        ),
+                    );
+            })
+        )
+        
     }
 
     public delete(ObjectApiEndPoint, ObjectDataToDelete) {
-        // refresh token if necessary
-        this.userService.isLoginAndCheckExpiry();
-
-        return this.apiService.apiDeleteEndPoint(`${ObjectApiEndPoint}/${ObjectDataToDelete.id}`, this.userService.token)
-            .pipe(
-                tap(
-                    success => {
-                        // remove from cache if delete success
-                        if (this.isCacheSetupReady(ObjectApiEndPoint)) {
-                            let objectDataList = this.cachedObjectData[ObjectApiEndPoint].getValue();
-                            objectDataList = objectDataList.filter(
-                                ObjectDataInstance => {
-                                    if (ObjectDataInstance.id !== ObjectDataToDelete.id) {
-                                        return ObjectDataInstance;
+        return this._authCheck().pipe(mergeMap(() => {
+            return this.apiService.apiDeleteEndPoint(`${ObjectApiEndPoint}/${ObjectDataToDelete.id}`, this.userService.token)
+                .pipe(
+                    tap(
+                        success => {
+                            // remove from cache if delete success
+                            if (this.isCacheSetupReady(ObjectApiEndPoint)) {
+                                let objectDataList = this.cachedObjectData[ObjectApiEndPoint].getValue();
+                                objectDataList = objectDataList.filter(
+                                    ObjectDataInstance => {
+                                        if (ObjectDataInstance.id !== ObjectDataToDelete.id) {
+                                            return ObjectDataInstance;
+                                        }
                                     }
-                                }
-                            );
-                            this.cachedObjectData[ObjectApiEndPoint].next(objectDataList);
+                                );
+                                this.cachedObjectData[ObjectApiEndPoint].next(objectDataList);
+                            }
                         }
-                    }
-                )
-            );
+                    )
+                );
+        }))
     }
 
     public create(ObjectApiEndPoint, ObjectData) {
-        // refresh token if necessary
-        this.userService.isLoginAndCheckExpiry();
-
-        this.applyEditedValuesInPlace(ObjectData);        
-
-        return this.apiService.apiPostEndPoint(ObjectApiEndPoint, ObjectData, this.userService.token)
-            .pipe(
-                tap(
-                    (successObjectData: any) => {
-                        if (this.isCacheSetupReady(ObjectApiEndPoint)) {
-                            let objectDataList = this.cachedObjectData[ObjectApiEndPoint].getValue();
-                            objectDataList = [successObjectData].concat(objectDataList);
-                            this.sortObjectByNumericCriterias(objectDataList, ['order', 'id'], 'decr');                            
-                            this.logService.print(this, `created and sorted. Will broadcast this data update. Data is:`);
-                            this.logService.print(this, objectDataList);
-                            this.cachedObjectData[ObjectApiEndPoint].next(objectDataList);
+        return this._authCheck().pipe(mergeMap(() => {
+            this.applyEditedValuesInPlace(ObjectData);        
+    
+            return this.apiService.apiPostEndPoint(ObjectApiEndPoint, ObjectData, this.userService.token)
+                .pipe(
+                    tap(
+                        (successObjectData: any) => {
+                            if (this.isCacheSetupReady(ObjectApiEndPoint)) {
+                                let objectDataList = this.cachedObjectData[ObjectApiEndPoint].getValue();
+                                objectDataList = [successObjectData].concat(objectDataList);
+                                this.sortObjectByNumericCriterias(objectDataList, ['order', 'id'], 'decr');                            
+                                this.logService.print(this, `created and sorted. Will broadcast this data update. Data is:`);
+                                this.logService.print(this, objectDataList);
+                                this.cachedObjectData[ObjectApiEndPoint].next(objectDataList);
+                            }
                         }
-                    }
-                )
-            );
+                    )
+                );
+        }))
+
     }
 
     /**
