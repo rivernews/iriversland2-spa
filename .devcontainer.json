@@ -1,0 +1,25 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+    "dockerFile": "dev.Dockerfile",
+    "context": ".",
+	"workspaceFolder": "/usr/src",
+    "shutdownAction": "stopContainer",
+
+    "runArgs": [
+        "-v", "/Users/shaungc/Documents/repos/portfolio/iriversland2-spa:/usr/src"  
+    ],
+
+    // do not specify these, and do not press links within vscode terminal when in dev container, 
+    // otherwise vscode will assign a random port
+    // if you specify, you may keep track of the issue below:
+    // https://github.com/microsoft/vscode-remote-release/issues/1386
+    // "appPort": [],
+    // "forwardPorts": [],
+
+    "extensions": [
+    ],
+
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/zsh",
+    }
+}
