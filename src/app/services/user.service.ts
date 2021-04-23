@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from "../../environments/environment";
 
 import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
 import { catchError, map, timeout } from "rxjs/operators";
@@ -20,7 +21,7 @@ export class UserService {
     // the user object of the logged in user containing username, id and email
     public user: any;
 
-    public PERSISTENT_TOKEN_KEY = 'userService__login_user_token';
+    public PERSISTENT_TOKEN_KEY = (environment.production ? '' : 'Dev') + '_userService__login_user_token';
 
     // the actual JWT token
     public token: string;
@@ -72,11 +73,11 @@ export class UserService {
 
             // is not fresh, but not yet expired
             else if (alertExpirationDateTime < currentDateTime && currentDateTime < expirationDateTime) {
-                alert(`Login state is going to expire soon in ${this.getDisplayDeltaTimeInMinSec(currentDateTime, expirationDateTime)}. Will now try to refresh login state for you.`);
+                this.barService.popUpMessage(`Login will expire soon in ${this.getDisplayDeltaTimeInMinSec(currentDateTime, expirationDateTime)}, refreshing token...`);
                 return this.refreshToken().pipe(
                     map(isRefreshSuccess => {
                         if (isRefreshSuccess) {
-                            alert(`✅ Login state refreshed successfully! Your login is valid for the next ${this.getDisplayDeltaTimeInMinSec(new Date(), this.token_expires)}.`);
+                            this.barService.popUpMessage(`✅ Login state refreshed for the next ${this.getDisplayDeltaTimeInMinSec(new Date(), this.token_expires)} successfully!`);
                             this.isLoginStatusAndChange.next(true);
                         } else {
                             // refresh not successful, warn the user but nothing further
@@ -147,7 +148,7 @@ export class UserService {
                 })),
                 catchError(err => {
                     if (this.DEBUG) console.error('Error: cannot refresh login token: ', err);
-                    
+
                     // silent error and just return bool instead for subscribing
                     // return throwError(err);
                     return of(false);
@@ -194,9 +195,9 @@ export class UserService {
 
 
     /**
-     * 
+     *
      * Time Calculation
-     * 
+     *
      */
 
     private getDisplayDeltaTimeInMinSec(startDateObject: Date, endDateObject: Date) {

@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, OnDestroy,
     HostListener } from '@angular/core';
+import { environment } from "../../environments/environment";
 
 // Get Service
 import { UserService } from '../services/user.service';
-import { ApiService } from '../services/api.service';
 import { ObjectDataService } from "../services/object-data.service";
+import { BackupService } from "../services/backup.service";
 import { Subscription } from "rxjs";
 import { distinctUntilChanged } from "rxjs/operators";
 
@@ -12,7 +13,7 @@ import { distinctUntilChanged } from "rxjs/operators";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 
-// 3rd party library  
+// 3rd party library
 import CustomBalloonEditor from '@shaungc/ckeditor5-custom-balloon';
 
 import { UploadAdapter } from "../services/upload-adapter";
@@ -40,6 +41,10 @@ export class DocumentComponent implements OnInit, OnDestroy {
 
     /** models */
     public document: any = { content: ''}; // doc obj to receive API data / be submitted to API
+    private documentBackupIntervalSubscription?: number | undefined = undefined;
+    public backupCompleted = false;
+    private static BACKUP_INTERVAL_SECONDS = 20;
+    private static PERSISTENT_BACKUP_KEY = (environment.production ? '' : 'Dev') + '_documentComponent__doc_backup';
     public isDirty: boolean = false;
 
     /** editor objects */
@@ -70,7 +75,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
         private location: Location,
 
         private userService: UserService,
-        private apiService: ApiService,
+        private backupService: BackupService,
         private objectDataService: ObjectDataService,
         private logService: LogMessageService,
 
@@ -95,8 +100,8 @@ export class DocumentComponent implements OnInit, OnDestroy {
                         /** don't try to get doc if it's the first time. Wait for the editor instead */
                         this.logService.print(this, `Login the first time so bypass getDoc().`);
                     } else {
-                        this.logService.print(this, `Login status changed will re-do getDoc().`);  
-                        
+                        this.logService.print(this, `Login status changed will re-do getDoc().`);
+
                         this.getDocument()
                             .then()
                             .catch();
@@ -117,38 +122,59 @@ export class DocumentComponent implements OnInit, OnDestroy {
                     console.error("Error when destroying ckeditor:", error);
                 });
         }
+
+        // unsubscribe backup
+        if (this.documentBackupIntervalSubscription !== undefined) {
+            clearTimeout(this.documentBackupIntervalSubscription);
+            this.documentBackupIntervalSubscription = undefined;
+        }
+        this.backupService.unsubscribeCleanUpOldBackupDocuments(DocumentComponent.PERSISTENT_BACKUP_KEY);
+
         this.subscriptions.unsubscribe();
     }
 
     /**
-     * 
+     *
      * Interact with DOM
-     * 
+     *
      */
 
     @HostListener('window:beforeunload', ['$event'])
     onPageLeaveAlert(e) {
         e = e || window.event;
 
-        /** warn user if changes not saved but attempting to close the tab */        
+        /** warn user if changes not saved but attempting to close the tab */
         if (this.isDirty) {
             // in most of the browsers you can’t change the message shown, the browser strict on its on message
-    
+
             // For IE and Firefox prior to version 4
             if (e) {
                 e.returnValue = 'Sure?';
             }
-        
+
             // For Safari
             return 'Sure?';
         }
     }
 
-    /** 
-     * 
+    /**
+     *
      * Editor & Data
-     * 
+     *
      */
+
+    private subscribeBackupData() {
+        if (!this.backupCompleted) {
+            this.backupService.backupDocument(DocumentComponent.PERSISTENT_BACKUP_KEY, this.document);
+            this.backupCompleted = true;
+        } else {
+            this.logService.print(this, `no change detected, skipping backup`);
+        }
+
+        this.documentBackupIntervalSubscription = window.setTimeout(() => {
+            this.subscribeBackupData();
+        }, DocumentComponent.BACKUP_INTERVAL_SECONDS * 1000);
+    }
 
     public onEditorReady(editor) {
         this.logService.print(this, `onready balloon editor! content is ${this.document.content}`);
@@ -157,9 +183,14 @@ export class DocumentComponent implements OnInit, OnDestroy {
         this.getDocument()
         .then((success)=> {
             // set editability
-        
+
             if (this.documentCKeditor) {
                 this.documentCKeditor.isReadOnly = !this.isLogin;
+                // set up backup
+                if (!this.documentCKeditor.isReadOnly) {
+                    this.subscribeBackupData();
+                    this.backupService.subscribeCleanUpOldBackupDocuments(DocumentComponent.PERSISTENT_BACKUP_KEY);
+                }
             }
 
             // setup image upload handle for editor;
@@ -174,14 +205,15 @@ export class DocumentComponent implements OnInit, OnDestroy {
             this.snackBar.popUpMessage(`editorOnReady(): Cannot get document`, 0, 'Close', error);
         });
     }
-    
+
     public onDocumentEditorContentChange(event){
         this.isDirty = true;
+        this.backupCompleted = false;
     }
 
     private getDocument() {
         this.logService.print(this, `get document(): content is ${this.document.content}`);
-        
+
         return new Promise((resolve, reject) => {
             const docId = +this.route.snapshot.paramMap.get('id');
 
@@ -194,9 +226,9 @@ export class DocumentComponent implements OnInit, OnDestroy {
                     doc => {
                         this.logService.print(this, `Got doc:`);
                         this.logService.print(this, doc);
-                        
-                        /** this will only do a swallow copy - only copy the reference. 
-                         * So the unsaved changes will effect the cache data. 
+
+                        /** this will only do a swallow copy - only copy the reference.
+                         * So the unsaved changes will effect the cache data.
                          * However, if user wants to revert and discard changes,
                          * the user can just refresh the browser.
                          */
@@ -205,6 +237,9 @@ export class DocumentComponent implements OnInit, OnDestroy {
                         // if already initialized (so document also set once)
                         if (this.documentCKeditor) {
                             this.documentCKeditor.isReadOnly = !this.isLogin;
+                            if (this.documentCKeditor.isReadOnly) {
+                                this.subscribeBackupData();
+                            }
                         }
 
                         setTimeout(() => {
@@ -233,10 +268,10 @@ export class DocumentComponent implements OnInit, OnDestroy {
         });
     }
 
-    /* 
+    /*
     *
     * Deal with editables
-    * 
+    *
     * */
 
     private generateDocument() {
@@ -253,9 +288,9 @@ export class DocumentComponent implements OnInit, OnDestroy {
     }
 
     /*
-    * 
+    *
     * CRUD operations
-    * 
+    *
     *  */
 
     public onSubmitClick() {
@@ -323,7 +358,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
             this.isSubmitting = true;
             this.subscriptions.add(this.objectDataService.delete(this.apiQueryEndPoint, this.document).subscribe(
                 response => {
-                    this.isDirty = false; 
+                    this.isDirty = false;
                     this.snackBar.popUpMessage("✅ Document deleted.");
                     this.location.back();
                 },

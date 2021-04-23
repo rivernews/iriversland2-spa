@@ -26,6 +26,7 @@
     "@angular/service-worker": "^7.0.0",
     "core-js": "^2.5.7",
     "gh-pages": "^2.1.1",
+    "moment": "^2.29.1",
     "rxjs": "^6.3.3",
     "rxjs-tslint": "^0.1.5",
     "zone.js": "^0.8.26"
@@ -43,7 +44,7 @@
     "@shaungc/ckeditor5-custom-balloon": "^1.0.2",
     "@types/jasmine": "^2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/moment": "^2.13.0",
     "@types/tinycolor2": "^1.4.1",
     "angular2-recaptcha": "^1.1.0",
     "angulartics2": "^7.2.0",
