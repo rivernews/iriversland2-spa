@@ -1,4 +1,7 @@
 # Iriversland2 Frontend - Single Page Application (SPA)
+
+![example workflow](https://github.com/rivernews/iriversland2-spa/actions/workflows/deploy.yml/badge.svg)
+
 The frontend of my personal website. The entire project consists 3 repositories:
 - **[Iriversland2 SPA](https://github.com/rivernews/iriversland2-spa)**: (this repository) the frontend code base, using Angular.
 - **[Iriversland2 Backend API](https://github.com/rivernews/iriversland2-api)**: the backend RESTful API in Django.
@@ -11,7 +14,7 @@ The frontend of my personal website. The entire project consists 3 repositories:
 
 ## Deploy Angular App to Github Page
 
-[Following this Medium post](https://codeburst.io/deploy-react-to-github-pages-to-create-an-amazing-website-42d8b09cd4d) with change to output the built angular files to `/dist/`. 
+[Following this Medium post](https://codeburst.io/deploy-react-to-github-pages-to-create-an-amazing-website-42d8b09cd4d) with change to output the built angular files to `/dist/`.
 - Refer to [package.json](package.json) for the command, and [angular.json](angular.json) for the output built files.
 - Also refer to [Angular doc: Deployment](https://angular.io/guide/deployment#deploy-to-github-pages) to add the `--base-href` parameter. This is important [for both static files and routing](https://stackoverflow.com/a/49093627/9814131) in angualr.
 - Finally run `npm run deploy`

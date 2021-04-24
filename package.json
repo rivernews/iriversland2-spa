@@ -44,7 +44,6 @@
     "@shaungc/ckeditor5-custom-balloon": "^1.0.2",
     "@types/jasmine": "^2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/moment": "^2.13.0",
     "@types/tinycolor2": "^1.4.1",
     "angular2-recaptcha": "^1.1.0",
     "angulartics2": "^7.2.0",
