@@ -206,7 +206,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onDocumentEditorContentChange(event){
+    public onDocumentEditorContentChange(event=undefined){
         this.isDirty = true;
         this.backupCompleted = false;
     }

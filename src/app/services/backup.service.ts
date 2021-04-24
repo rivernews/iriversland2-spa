@@ -29,7 +29,7 @@ export class BackupService {
         (`backup docs...${backupDocuments.length}`);
         backupDocuments.push({
             document,
-            timestamp: (new Date()).toISOString()
+            timestamp: moment().toISOString(true)
         });
         this.logService.print(this, `backuped docs...${backupDocuments.length}`);
         this.write(persistentKey, backupDocuments);
