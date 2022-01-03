@@ -22,9 +22,12 @@ export class UserService {
     public user: any;
 
     public PERSISTENT_TOKEN_KEY = (environment.production ? '' : 'Dev') + '_userService__login_user_token';
+    public PERSISTENT_REFRESH_KEY = (environment.production ? '' : 'Dev') + '_userService__login_user_refresh';
 
     // the actual JWT token
     public token: string;
+    // the refresher to refresh `token`
+    public refresh: string;
 
     // the token expiration date
     public token_expires: Date;
@@ -41,19 +44,20 @@ export class UserService {
     ) {
         // try to resume login state from localStage
         this.token = localStorage.getItem(this.PERSISTENT_TOKEN_KEY);
+        this.refresh = localStorage.getItem(this.PERSISTENT_REFRESH_KEY);
         if (this.token) {
-            this.updateData(this.token);
+            this.updateData(this.token, this.refresh);
             // check token in localStorage is valid
             this.isLoginAndCheckExpiry().subscribe(
                 isLoginSuccess => {
-                    if (isLoginSuccess) {
-                        this.barService.popUpMessage('✅ Reused previous login session successfully', 3000)
-                    } else {
+                    if (!isLoginSuccess) {
                         localStorage.removeItem(this.PERSISTENT_TOKEN_KEY);
+                        localStorage.removeItem(this.PERSISTENT_REFRESH_KEY);
                     }
                 },
                 () => {
                     localStorage.removeItem(this.PERSISTENT_TOKEN_KEY);
+                    localStorage.removeItem(this.PERSISTENT_REFRESH_KEY);
                 }
             );
         }
@@ -66,7 +70,8 @@ export class UserService {
             let alertExpirationDateTime = new Date(expirationDateTime.getTime() - 30 * 60 * 1000); // refresh token before 30 minutes of expiration
 
             // login is still fresh
-            if (alertExpirationDateTime > currentDateTime) {
+            if (currentDateTime < alertExpirationDateTime) {
+                this.barService.popUpMessage('✅ Restored previous login session', 3000)
                 this.isLoginStatusAndChange.next(true);
                 return of(true);
             }
@@ -81,7 +86,7 @@ export class UserService {
                             this.isLoginStatusAndChange.next(true);
                         } else {
                             // refresh not successful, warn the user but nothing further
-                            alert('⚠️ Refresh login state failed, save all your changes and check your network. Will retry upon your next server request.');
+                            alert('🟠 Refresh login state failed, save all your changes and check your network. Will retry upon your next server request.');
                         }
 
                         // token still valid even if refresh not successful
@@ -95,10 +100,7 @@ export class UserService {
 
             // expired
             else {
-                // notify the user and let user choose to go to login page or not, don't force it.
-                if (confirm('Login status expired. Do you want to go to login page? Changes will be lost, please make a copy of all your changes first.')) {
-                    this.router.navigate(['/login'], { queryParamsHandling: 'merge' });
-                }
+                alert('🔴 Login status expired. Please make a copy of all your changes, then login again.');
                 return of(false);
             }
         } else {
@@ -107,7 +109,6 @@ export class UserService {
         }
     }
 
-    // Uses http.post() to get an auth token from djangorestframework-jwt endpoint
     public login(user) {
         return new Promise((resolve, reject) => {
             this.subscriptions.add(this.apiService.apiPostEndPoint('token-auth', user)
@@ -116,8 +117,11 @@ export class UserService {
                 )
                 .subscribe(
                     data => {
+                        if (!data.hasOwnProperty('access')) {
+                            throw new Error('Login response contains no token');
+                        }
                         this.logService.print(this, `login success & got token!`);
-                        this.updateData(data['token']);
+                        this.updateData(data['access'], data['refresh']);
                         this.barService.popUpMessage("✅ Login successfully!", 1000);
                         resolve("logged in. (Detail message is given in user service)");
                     },
@@ -132,12 +136,12 @@ export class UserService {
 
     // Refreshes the JWT token, to extend the time the user is logged in
     public refreshToken() {
-        return this.apiService.apiPostEndPoint('token-refresh', { token: this.token })
+        return this.apiService.apiPostEndPoint('token-refresh', { refresh: this.refresh })
             .pipe(
                 timeout(UserService.TIMEOUT_login),
                 map((data => {
-                    if (data['token']) {
-                        this.updateData(data['token']);
+                    if (data.hasOwnProperty('access')) {
+                        this.updateData(data['access']);
                         this.logService.print(this, `got new token and refreshed it`);
 
                         // refreshed ok
@@ -157,10 +161,11 @@ export class UserService {
     }
 
     public logout() {
-        this.token = null;
+        this.refresh = this.token = null;
         this.token_expires = null;
         this.user = null;
         localStorage.removeItem(this.PERSISTENT_TOKEN_KEY);
+        localStorage.removeItem(this.PERSISTENT_REFRESH_KEY);
         this.isLoginStatusAndChange.next(false);
         this.barService.popUpMessage("Logout", 2000);
     }
@@ -175,9 +180,13 @@ export class UserService {
         return this.apiService.apiGetEndPoint('users', {}, this.token);
     }
 
-    private updateData(token) {
+    private updateData(token, refresh=null) {
         this.token = token;
         localStorage.setItem(this.PERSISTENT_TOKEN_KEY, token);
+        if (refresh) {
+            this.refresh = refresh;
+            localStorage.setItem(this.PERSISTENT_REFRESH_KEY, refresh);
+        }
 
         // decode the token to read the username and expiration timestamp
         const token_parts = this.token.split(/\./);
